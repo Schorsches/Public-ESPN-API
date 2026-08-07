@@ -44,6 +44,9 @@ Everything that connects the app to real NFL data:
    kickoff times, and the rarer movement of a game to a different week
 5. **Weighted playoff rounds** — let the admin optionally make playoff rounds worth more
    points than regular-season games
+6. **The preseason as a standalone warm-up competition** — the four preseason matchdays run
+   as their own self-contained contest with their own standings and their own champion,
+   entirely separate from the regular-season table
 
 ## THE ONE INVARIANT THAT OVERRIDES EVERYTHING ELSE
 
@@ -253,6 +256,76 @@ real teams as seeding resolves. This has a direct consequence for the anomaly de
 below — a team changing on an existing event ID is *expected* in exactly this one case and
 suspicious in every other case.
 
+### The preseason: fully available, and the easiest phase to ingest
+
+`?seasontype=1&week={1..4}&dates=2026` returns **49 games** — 1 Hall of Fame Game plus three
+weeks of 16. Verified before the first game of the 2026 preseason:
+
+- **All 49 carry `timeValid: true`** — real kickoff times, no placeholders anywhere
+- **All teams are resolved** — zero `-1`/`-2` entries, unlike the playoffs
+- Broadcast information present on most games
+- No flex exposure: the NFL does not flex preseason games, and windows are fixed at
+  schedule release
+
+So preseason ingest needs neither the TBD-resolution path nor the flex ratchet. That is why
+it is the right phase to prove the pipeline on — see the phases section.
+
+**Preseason week numbers are offset from their labels.** This will confuse players if you
+render the raw number:
+
+| ESPN `week.number` | `calendar` label | Window (2026) |
+|---|---|---|
+| 1 | Hall of Fame Weekend | Aug 6–12 |
+| 2 | **Preseason Week 1** | Aug 13–19 |
+| 3 | Preseason Week 2 | Aug 20–26 |
+| 4 | Preseason Week 3 | Aug 27–Sep 8 |
+
+Always take the display label from `leagues[0].calendar[].entries[].label`. Never render
+`week.number` directly for preseason.
+
+**There is no overtime in the preseason, so ties are common.** Measured across the 2025
+season:
+
+| Phase (2025) | Games | Ties | Rate | Went to OT |
+|---|---|---|---|---|
+| **Preseason** | 49 | **3** | **6.12%** | **0** |
+| Regular season | 272 | 1 | 0.37% | 14 |
+| Postseason | 13 | 0 | impossible | — |
+
+Preseason ties are **16.7× more likely** than regular-season ties. The 2025 ties were
+LV–SEA 23:23, MIA–CHI 24:24 and JAX–NO 17:17, each with `winner: false` on both competitors
+and a final `period` of 4. Treat the draw path as a core case in the preseason, not an edge
+case: in `OUTCOME_ONLY` the draw option matters constantly, and in `EXACT_SCORE` the
+tie-scoring branch fires roughly sixteen times more often than it does in the regular season.
+
+**The Hall of Fame Game is special in three ways.** It is a single-game matchday; it is
+played at a neutral site (`neutralSite: true`, Tom Benson Hall of Fame Stadium, Canton OH);
+and its `shortName` uses a different delimiter:
+
+```json
+{ "shortName": "CAR VS ARI", "name": "Carolina Panthers at Arizona Cardinals",
+  "neutralSite": true, "notes": [{ "headline": "Hall of Fame Game" }] }
+```
+
+`shortName` says `VS` while `name` still says "at". They contradict each other, which is one
+more reason never to parse either string for team identity — always read `competitors[]` and
+select on `homeAway`.
+
+**An entire preseason can be cancelled, and ESPN keeps the games.** The 2020 preseason was
+cancelled in full. `?seasontype=1&dates=2020` still returns all 49 events, every single one:
+
+```json
+"status": { "id": "5", "name": "STATUS_CANCELED", "state": "post",
+            "completed": false, "description": "Canceled" }
+```
+
+with `score` values of `"0"` and `"0"`.
+
+This is the case that proves why scoring must require `completed === true` and not merely
+`state === 'post'`. A check on `state` alone would have treated 49 games that were never
+played as legitimate 0:0 draws and awarded points to every player who predicted a tie. **Use
+2020 season type 1 as a regression fixture** — it is real data, not a hypothetical.
+
 ### Supporting endpoints
 
 ```bash
@@ -309,14 +382,40 @@ name, logo URL, primary/alternate colours, conference, division.
 Never store `-1` / `-2` as teams. TBD is represented by `NULL` team references on the game,
 not by a placeholder team row.
 
+### `competitions` — the unit a champion is won in
+
+One level above matchdays. Without this, a league has exactly one standings table per season
+and the preseason cannot have its own champion.
+
+```
+id                uuid pk
+league_id         uuid not null references leagues(id)
+season_year       int  not null
+kind              text not null   -- 'preseason' | 'regular_season' | 'postseason'
+label             text not null   -- "Preseason 2026", "Hauptrunde 2026"
+status            text not null default 'upcoming'
+                        -- upcoming | active | provisional | complete | abandoned
+champion_user_ids uuid[] not null default '{}'   -- plural: shared titles are allowed
+completed_at      timestamptz null
+UNIQUE (league_id, season_year, kind)
+```
+
+`champion_user_ids` is an array from the outset, not a nullable single reference. Shared
+titles are an accepted outcome, and retrofitting the array later would mean migrating a table
+that holds permanent records.
+
+There is deliberately **no `prediction_mode` column** — every competition in a league uses
+the league's mode. See the competitions section for why that matters more than it looks.
+
 ### `matchdays` — the unit of scoring, replacing any bare `week` integer
 
 ```
 id                  uuid pk
+competition_id      uuid         not null references competitions(id)
 season_year         int          not null     -- 2026, the SEASON year
 season_type         smallint     not null     -- 1 pre, 2 regular, 3 post
 week_number         smallint     not null     -- within the season type
-label               text         not null     -- "Week 12", "Wild Card" (from calendar)
+label               text         not null     -- "Week 12", "Wild Card", "Preseason Week 1"
 starts_at           timestamptz  not null     -- from leagues[0].calendar
 ends_at             timestamptz  not null
 is_predictable      boolean      not null default true   -- false for Pro Bowl (3/4)
@@ -324,6 +423,13 @@ status              text         not null default 'upcoming'
                                  -- upcoming | in_progress | provisional | final
 UNIQUE (season_year, season_type, week_number)
 ```
+
+`label` always comes from the calendar, never from `week_number` — preseason week 2 is
+labelled "Preseason Week 1" and rendering the number would be wrong.
+
+Standings, weekly winners and multipliers all scope to `competition_id`. The same scoring
+code computes the preseason table and the regular-season table over different scopes, which
+is what keeps this additive rather than a second implementation.
 
 Every game belongs to exactly one matchday. Every weekly result, weekly winner and
 standings row keys on `matchday_id`, **never on a `week` integer** — regular week 1 and
@@ -561,6 +667,78 @@ Optional, off by default, configured per league by the admin.
 
 ---
 
+## COMPETITIONS AND THE PRESEASON WARM-UP
+
+The preseason runs as a **self-contained warm-up competition with its own champion**. It is
+not a set of extra games appended to the regular season.
+
+### Separation is absolute
+
+- The preseason competition has its own standings, its own weekly winners and its own
+  champion.
+- **No preseason points reach the regular-season table.** Not weighted down, not partially —
+  zero. Assert this with a query in the test suite, not just in review.
+- A player can win the warm-up title and finish last in the real season. That is the point.
+
+### The champion is set once, and having no champion is a valid outcome
+
+When a competition's last matchday goes final, compute the standings, write
+`champion_user_ids` and `completed_at`, and set `status = 'complete'`. Those fields follow the
+same ratchet discipline as `locked_at`: written once, never silently rewritten. Changing them
+requires an audited admin recalculation, whose only legitimate trigger is an ESPN score
+correction.
+
+**If no game in the competition was ever completed, the competition ends `abandoned` with an
+empty `champion_user_ids`.** The 2020 preseason is exactly this case: 49 games, all cancelled,
+nothing played. Crowning somebody off an empty table would be worse than crowning nobody.
+Assert the empty-array outcome explicitly.
+
+Ties for the title are expected — the preseason is only four matchdays — and are resolved with
+the **existing tie-break chain** already used for the regular season (total points, then weekly
+wins, then correct outcomes, then alphabetical). Where players remain level, they are **joint
+champions**, all recorded in `champion_user_ids`, and the UI renders shared ranks the same way
+it already does elsewhere. Do not invent a preseason-specific decider.
+
+### The preseason inherits the league's prediction mode
+
+A league's mode applies to every one of its competitions. Two consequences follow, and both
+need to be surfaced in the UI rather than discovered later:
+
+1. **Opting into the preseason moves the mode-lock deadline a month earlier.** The existing
+   rule is that a league's prediction mode becomes immutable once the league has started,
+   where started = the first game's deadline passing. If the preseason is enabled, the first
+   deadline is the Hall of Fame Game in early August, not Week 1 in September. This is correct
+   — the mode must be settled before any prediction is taken — but the league-creation and
+   preseason-opt-in flows must both say so explicitly, because an admin who expected until
+   September to decide will otherwise be locked in without warning.
+2. **`EXACT_SCORE` on preseason games is close to a lottery.** Starters play little, so
+   scorelines are near-noise. Leagues on exact-score mode will find the warm-up title
+   substantially luck-driven. That is arguably fair — nobody has an edge — but the rules page
+   must state plainly how the mode behaves here so it reads as a deliberate choice.
+
+### Opt-in
+
+Preseason participation is opt-in per league, defaulting to off. A league that opts in after
+the preseason has started counts **only the matchdays whose deadlines have not yet passed**,
+and the UI says so on the opt-in screen and in the preseason standings. Never retroactively
+score a matchday nobody could predict.
+
+### The Hall of Fame Game
+
+It counts, as its own single-game matchday. Two things follow:
+
+- With one game and 10–50 players, most of the league will tie for that matchday's win. The
+  existing split-share logic handles it — `1/n` as `NUMERIC`, summing to exactly 1 — but test
+  it at the extreme (30 of 50 tied), because a one-game matchday is the worst case for any
+  rounding in the share calculation.
+- It is a neutral-site game. Label the outcome options by team name, never "Heimsieg" /
+  "Auswärtssieg".
+
+**Reuse `matchdays.is_predictable` rather than adding a field.** It already exists for
+excluding the Pro Bowl. If the Hall of Fame window is missed in a given year, the game is
+still ingested and displayed — it simply is not scored. That makes a missed window cost one
+matchday instead of the competition, with no code change either way.
+
 ## SCORING PIPELINE
 
 **Live scores and final results are different things and live in different columns.**
@@ -605,7 +783,7 @@ secrets and never reaches the client bundle. The functions are not publicly invo
 | Job | Cadence | What it does |
 |---|---|---|
 | `sync-teams` | Weekly, plus manually | Upsert all 32 teams |
-| `sync-season-schedule` | Daily 06:00 UTC, **plus 4×/day Tue–Thu** | Walk the calendar, sync every week of season types 2 and 3. ~23 requests. Tue–Thu is when flex decisions are announced. |
+| `sync-season-schedule` | Daily 06:00 UTC, **plus 4×/day Tue–Thu** | Walk the calendar, sync every week of season types 1, 2 and 3. ~27 requests. Tue–Thu is when flex decisions are announced. Preseason weeks need no extra polling — they never flex — but sync them anyway so cancellations are caught. |
 | `sync-upcoming-games` | Hourly | Re-sync only weeks containing a game kicking off within 36h. Usually 1 request. Catches late changes. |
 | `poll-live-scores` | **Every 5 minutes**, only while at least one game is `in_progress` or kicks off within 15 minutes | **One** scoreboard call for the affected week covers the entire concurrent slate. Updates live columns. |
 | `finalize-and-score` | Every 5 minutes | Pick up newly-final games, snapshot finals, run scoring, recompute matchday standings, set matchday finality. |
@@ -719,14 +897,30 @@ NFL. Never render a placeholder timestamp as if it were real.
 round and the slot ("Wild Card, Sonntag") with a "Teilnehmer noch offen" state. Notify
 players when a round's matchups resolve — the window between seeding and kickoff is short.
 
-**Draws in the playoffs are impossible.** NFL postseason games play until somebody wins. In
-`OUTCOME_ONLY` mode the draw option must be absent from the UI for postseason games **and**
-rejected by a `CHECK` constraint. Regular-season ties are possible and rare, and remain
-fully supported.
+**Draw availability depends on the season type, and it is not a single rule.** Both ends of
+this axis are real, so do not collapse it into "draws only happen in the regular season":
+
+| `season_type` | Draw in `OUTCOME_ONLY` | Why | Enforcement |
+|---|---|---|---|
+| 1 preseason | **allowed, ~6% of games** | no overtime at all | — |
+| 2 regular | allowed, ~0.4% of games | overtime can still end level | — |
+| 3 postseason | **rejected** | play continues until someone wins | `CHECK` constraint |
+
+In the postseason the draw option must be absent from the UI **and** rejected by a `CHECK`
+constraint. In the preseason it is a core path that players will use often, so give it equal
+visual weight to the two win options rather than tucking it away.
 
 **Neutral-site games** — the Super Bowl, international games — carry `neutralSite: true`.
 Label the outcome options by team name rather than "Heimsieg" / "Auswärtssieg", which are
 meaningless when neither team is at home.
+
+**The preseason must read as a separate contest, not as early-season games.** Give it its own
+visibly distinct standings screen with its own title ("Preseason 2026") and its own trophy, and
+state on both the preseason table and the regular-season table that no points move between
+them. The failure mode to design against is a player accumulating 40 points in August and
+expecting to start September in the lead. Announce the warm-up champion as its own moment when
+the last preseason matchday goes final, and keep that record visible once the real season
+starts.
 
 **Timezones.** Store everything as `timestamptz` in UTC; display in the league timezone
 (default Europe/Berlin). Note that a Sunday Night Football kickoff lands after midnight
@@ -770,15 +964,25 @@ Predictions already exist. The migration must not endanger them.
 Each phase is independently runnable, testable and shippable, and ends with the RLS test
 matrix for whatever it added.
 
-**Phase 1 — Foundation.** Schema inventory, additive migration, backfill with the manual
-resolution screen, `nfl_teams` + `matchdays` populated from the calendar, ESPN client with
-timeouts/retry/circuit breaker, Zod schemas, `job_runs`, admin health view. No player-facing
-change.
+**A note on sequencing.** The preseason is deliberately placed early, and not as a
+convenience. It is the only phase of the NFL year where every game arrives with a valid
+kickoff time and fully resolved teams, where nothing flexes, and where getting it wrong costs
+a warm-up title rather than the season that counts. That makes it a live shakedown of the
+whole ingest → live-score → finalise → score chain, on real data with real players, weeks
+before Week 1. If the pipeline has a defect, it should surface in August. Do not defer the
+preseason to the end because it looks like the smallest feature — its value is mostly in when
+it runs.
 
-**Phase 2 — Schedule ingest, read-only.** `sync-season-schedule` for regular season and
-playoffs, the `resolveSchedule` function with its full unit-test suite, `game_revisions`,
-`game_ingest_anomalies`, schedule display with TBD and matchup-pending states. Predictions
-not yet wired to the new games.
+**Phase 1 — Foundation.** Schema inventory, additive migration, backfill with the manual
+resolution screen, `competitions` + `nfl_teams` + `matchdays` populated from the calendar,
+ESPN client with timeouts/retry/circuit breaker, Zod schemas, `job_runs`, admin health view.
+No player-facing change.
+
+**Phase 2 — Schedule ingest, read-only.** `sync-season-schedule` for all three season types,
+the `resolveSchedule` function with its full unit-test suite, `game_revisions`,
+`game_ingest_anomalies`, schedule display with TBD and matchup-pending states, calendar-sourced
+labels (so preseason week 2 renders as "Preseason Week 1"). Predictions not yet wired to the
+new games.
 
 **Phase 3 — Deadlines and flex.** The lock trigger, the deadline ratchet, prediction entry
 against ingested games, the change feed and notifications, week-reassignment handling. This
@@ -790,11 +994,20 @@ subscriptions, the live scoreboard UI with data-age display and provisional stan
 **Phase 5 — Finalisation and scoring.** Final snapshot, idempotent scoring, matchday
 finality, retroactive correction handling, sticky admin overrides, recalculation.
 
-**Phase 6 — Weighted playoffs.** Per-league multipliers, presets, the freeze-on-first-lock
+**Phase 6 — The preseason warm-up competition.** Per-league opt-in with the mode-lock warning,
+the preseason competition and its separate standings, the set-once champion with joint titles,
+the `abandoned` path for a cancelled preseason, the Hall of Fame single-game matchday via
+`is_predictable`, draw handling given the 6% tie rate, and the UI making unmistakably clear
+that these points do not carry into the regular season.
+
+This phase is the pipeline shakedown described above. Run it against live preseason data
+before the regular season opens.
+
+**Phase 7 — Weighted playoffs.** Per-league multipliers, presets, the freeze-on-first-lock
 rule, override-and-recalculate, rules page rendering the active scheme, playoff draw
 prohibition, neutral-site labelling.
 
-**Phase 7 — Operations.** Anomaly review screen, manual job invocation, revision history per
+**Phase 8 — Operations.** Anomaly review screen, manual job invocation, revision history per
 game, league export including full schedule and revision history, alerting when a job fails
 or a matchday stays provisional longer than expected.
 
@@ -847,6 +1060,30 @@ Every one of these gets a named test. For each, state the expected behaviour in 
 34. Any job run against a seeded database → `predictions` table unchanged, asserted
 35. Attempt to delete a game that has predictions → refused by `ON DELETE RESTRICT`
 
+**Preseason and competitions**
+36. **Whole preseason cancelled** (2020 fixture: 49 games, all `STATUS_CANCELED` with
+    `state: 'post'`, `completed: false`, scores `"0"`) → nothing scored, competition ends
+    `abandoned`, `champion_user_ids` empty, **no champion crowned**
+37. Preseason tie in `OUTCOME_ONLY` → draw scores correctly; both `winner` flags are `false`
+38. Preseason tie in `EXACT_SCORE` → tie branch applies (exact 5 / correct tendency 3)
+39. Preseason game level at the end of period 4 → final immediately, not held open for overtime
+40. ESPN preseason `week.number = 2` → displayed as "Preseason Week 1" from the calendar label
+41. Hall of Fame Game → `neutralSite: true`, labelled by team name; `shortName` `"CAR VS ARI"`
+    never parsed for team identity
+42. Single-game matchday with 30 of 50 players tied → weekly-win shares of 1/30 as `NUMERIC`,
+    summing to exactly 1
+43. Preseason competition completes → `champion_user_ids` written once; a second finalisation
+    pass changes nothing
+44. Preseason champion is a tie → all tied players recorded as joint champions, shared ranks
+    rendered
+45. **Preseason points never appear in regular-season standings** → asserted by direct query
+46. League opts in mid-preseason → only matchdays with unexpired deadlines count, stated in
+    the UI
+47. Preseason enabled → mode-lock fires at the Hall of Fame deadline, not at Week 1; admin was
+    warned at opt-in
+48. Preseason and regular-season week 1 both exist → separate matchdays in separate
+    competitions, separate standings
+
 ---
 
 ## NON-GOALS
@@ -855,6 +1092,12 @@ No real-money handling or payments. No public sign-up — invite only. No bettin
 live play-by-play ticker beyond score, quarter and clock. No mid-season prediction-mode
 switching. No migration of predictions between modes. No fantasy scoring. No player-level
 statistics beyond what bonus questions already need.
+
+No separate prediction mode per competition — every competition uses the league's mode. No
+combined year-long leaderboard spanning the preseason and the regular season. No team-based
+standings derived from preseason results (note that the two Hall of Fame participants play four
+preseason games while the other thirty play three, so such a table would not be comparable
+anyway).
 
 ---
 
