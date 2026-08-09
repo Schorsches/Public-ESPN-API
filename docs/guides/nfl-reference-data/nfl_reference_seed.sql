@@ -75,6 +75,22 @@ create index if not exists nfl_players_team        on nfl_players (team_id);
 create index if not exists nfl_players_position    on nfl_players (position_abbr);
 create index if not exists nfl_players_rookie      on nfl_players (is_rookie) where is_rookie;
 
+create table if not exists nfl_coaches (
+  id                uuid primary key default gen_random_uuid(),
+  espn_coach_id     text not null unique,
+  first_name        text,
+  last_name         text,
+  full_name         text not null,
+  team_id           uuid references nfl_teams(id) on delete restrict,
+  experience_years  int,
+  headshot_url      text,
+  name_is_ambiguous boolean not null default false,
+  is_active         boolean not null default true,
+  last_synced_at    timestamptz not null default now()
+);
+
+create index if not exists nfl_coaches_team on nfl_coaches (team_id);
+
 begin;
 
 -- teams -------------------------------------------------------------------
@@ -3191,12 +3207,58 @@ on conflict (espn_athlete_id) do update set
   headshot_url=excluded.headshot_url, name_is_ambiguous=excluded.name_is_ambiguous,
   is_active=true, last_synced_at=now();
 
+-- coaches -----------------------------------------------------------------
+insert into nfl_coaches (espn_coach_id,first_name,last_name,full_name,experience_years,headshot_url,name_is_ambiguous,team_id)
+select v.espn_coach_id, v.first_name, v.last_name, v.full_name, v.experience_years, v.headshot_url, v.name_is_ambiguous, t.id
+from (values
+  ('2471205','Joe','Brady','Joe Brady',0,null,false,'2'),
+  ('4607510','Jeff','Hafley','Jeff Hafley',0,null,false,'15'),
+  ('1257','Mike','Vrabel','Mike Vrabel',7,'https://a.espncdn.com/i/headshots/nfl/coaches/65/1257.jpg',false,'17'),
+  ('558','Aaron','Glenn','Aaron Glenn',1,null,false,'20'),
+  ('5173599','Jesse','Minter','Jesse Minter',0,null,false,'33'),
+  ('2184471','Zac','Taylor','Zac Taylor',7,'https://a.espncdn.com/i/headshots/nfl/coaches/65/2184471.jpg',false,'4'),
+  ('3017859','Todd','Monken','Todd Monken',0,null,false,'5'),
+  ('17578','Mike','McCarthy','Mike McCarthy',18,'https://a.espncdn.com/i/headshots/nfl/coaches/65/17578.jpg',false,'23'),
+  ('9619','DeMeco','Ryans','DeMeco Ryans',3,null,false,'34'),
+  ('2126648','Shane','Steichen','Shane Steichen',3,null,false,'11'),
+  ('2161829','Liam','Coen','Liam Coen',1,null,false,'30'),
+  ('4085970','Robert','Saleh','Robert Saleh',4,null,false,'10'),
+  ('17567','Sean','Payton','Sean Payton',18,'https://a.espncdn.com/i/headshots/nfl/coaches/65/17567.jpg',false,'7'),
+  ('17553','Andy','Reid','Andy Reid',27,'https://a.espncdn.com/i/headshots/nfl/coaches/65/17553.jpg',false,'12'),
+  ('27','Jim','Harbaugh','Jim Harbaugh',6,null,false,'24'),
+  ('2181979','Klint','Kubiak','Klint Kubiak',0,null,false,'13'),
+  ('17530','Brian','Schottenheimer','Brian Schottenheimer',1,null,false,'6'),
+  ('17587','John','Harbaugh','John Harbaugh',18,'https://a.espncdn.com/i/headshots/nfl/coaches/65/17587.jpg',false,'19'),
+  ('4372439','Nick','Sirianni','Nick Sirianni',5,null,false,'21'),
+  ('2485644','Dan','Quinn','Dan Quinn',8,'https://a.espncdn.com/i/headshots/nfl/coaches/65/2485644.jpg',false,'28'),
+  ('2180177','Ben','Johnson','Ben Johnson',1,null,false,'3'),
+  ('1832','Dan','Campbell','Dan Campbell',6,null,false,'8'),
+  ('4082797','Matt','LaFleur','Matt LaFleur',7,'https://a.espncdn.com/i/headshots/nfl/coaches/65/4082797.jpg',false,'9'),
+  ('2146711','Kevin','O''Connell','Kevin O''Connell',4,null,false,'16'),
+  ('4408695','Kevin','Stefanski','Kevin Stefanski',6,null,false,'1'),
+  ('17762','Dave','Canales','Dave Canales',2,null,false,'29'),
+  ('14882','Kellen','Moore','Kellen Moore',1,null,false,'18'),
+  ('7157','Todd','Bowles','Todd Bowles',9,'https://a.espncdn.com/i/headshots/nfl/coaches/65/7157.jpg',false,'27'),
+  ('4872749','Mike','LaFleur','Mike LaFleur',0,null,false,'22'),
+  ('2499338','Sean','McVay','Sean McVay',9,'https://a.espncdn.com/i/headshots/nfl/coaches/65/2499338.jpg',false,'14'),
+  ('5044374','Mike','Macdonald','Mike Macdonald',2,null,false,'26'),
+  ('17533','Kyle','Shanahan','Kyle Shanahan',9,'https://a.espncdn.com/i/headshots/nfl/coaches/65/17533.jpg',false,'25')
+) as v(espn_coach_id,first_name,last_name,full_name,experience_years,headshot_url,name_is_ambiguous,team_espn_id)
+join nfl_teams t on t.espn_team_id = v.team_espn_id
+on conflict (espn_coach_id) do update set
+  first_name=excluded.first_name, last_name=excluded.last_name, full_name=excluded.full_name,
+  team_id=excluded.team_id, experience_years=excluded.experience_years,
+  headshot_url=excluded.headshot_url, name_is_ambiguous=excluded.name_is_ambiguous,
+  is_active=true, last_synced_at=now();
+
 commit;
 
 -- verification
--- expect: 32 teams, 2968 players, 18 ambiguous-name rows
+-- expect: 32 teams, 2968 players, 32 coaches
 select (select count(*) from nfl_teams)   as teams,
        (select count(*) from nfl_players) as players,
+       (select count(*) from nfl_coaches) as coaches,
+       (select count(*) from nfl_coaches where team_id is null) as coach_orphans,
        (select count(*) from nfl_players where name_is_ambiguous) as ambiguous,
        (select count(*) from nfl_players where is_rookie)         as rookies,
        (select count(*) from nfl_players where team_id is null)   as orphans;

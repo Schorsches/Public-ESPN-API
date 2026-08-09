@@ -1,10 +1,10 @@
-# NFL Reference Data — Teams & Players Snapshot
+# NFL Reference Data — Teams, Players & Coaches Snapshot
 
-A pre-fetched snapshot of NFL teams and players from the ESPN public API, so an application
-can seed its reference tables **without calling ESPN at all**.
+A pre-fetched snapshot of NFL teams, players and head coaches from the ESPN public API, so an
+application can seed its reference tables **without calling ESPN at all**.
 
-Generated once from 34 API requests (1 teams + 1 groups + 32 rosters). Importing these files
-costs **zero** requests.
+Generated once from 66 API requests (1 teams + 1 groups + 32 rosters + 32 coaches). Importing
+these files costs **zero** requests.
 
 ## Snapshot
 
@@ -15,6 +15,7 @@ costs **zero** requests.
 | Season | 2026 preseason |
 | Teams | 32 |
 | Players | 2,968 |
+| Head coaches | 32 (one per team) |
 | Rookies (`experience.years = 0`) | 660 |
 | Colliding full names | 9 names, 18 rows |
 
@@ -22,10 +23,11 @@ costs **zero** requests.
 
 | File | Size | Use |
 |---|---|---|
-| `nfl_reference_seed.sql` | 514 KB | **Supabase / Postgres.** Creates tables, functions and indexes, then upserts everything. Idempotent. |
+| `nfl_reference_seed.sql` | 518 KB | **Supabase / Postgres.** Creates tables, functions and indexes, then upserts everything. Idempotent. |
 | `nfl_teams.csv` | 4.7 KB | Table-editor or `\copy` import |
 | `nfl_players.csv` | 448 KB | Table-editor or `\copy` import |
-| `nfl_reference.slim.json` | 142 KB | **Client-side bundle.** Column-array format, headshot URLs derived. |
+| `nfl_coaches.csv` | 3.3 KB | Head coach per team, with team name |
+| `nfl_reference.slim.json` | 144 KB | **Client-side bundle.** Column-array format, headshot URLs derived. |
 | `nfl_reference.json` | 1.3 MB | Full object-per-row JSON for server-side processing |
 | `manifest.json` | — | Counts and provenance for verification |
 
@@ -34,7 +36,7 @@ costs **zero** requests.
 Paste `nfl_reference_seed.sql` into the Supabase SQL editor and run it. It:
 
 - enables `pg_trgm` and `unaccent`
-- creates `nfl_teams` and `nfl_players` with `create table if not exists`
+- creates `nfl_teams`, `nfl_players` and `nfl_coaches` with `create table if not exists`
 - creates the immutable normalisation functions and the trigram search index
 - upserts on the ESPN ID, so re-running updates rather than duplicating
 - ends with a verification query
@@ -42,9 +44,9 @@ Paste `nfl_reference_seed.sql` into the Supabase SQL editor and run it. It:
 Expected result:
 
 ```
- teams | players | ambiguous | rookies | orphans
--------+---------+-----------+---------+---------
-    32 |    2968 |        18 |     660 |       0
+ teams | players | coaches | coach_orphans | ambiguous | rookies | orphans
+-------+---------+---------+---------------+-----------+---------+---------
+    32 |    2968 |      32 |             0 |        18 |     660 |       0
 ```
 
 **Verified**: executed on PostgreSQL 16, runs in ~0.2 s, and produces identical counts on a
@@ -58,10 +60,11 @@ tables and map the columns yourself rather than editing the seed.
 ```sql
 \copy nfl_teams   from 'nfl_teams.csv'   with (format csv, header true)
 \copy nfl_players from 'nfl_players.csv' with (format csv, header true)
+\copy nfl_coaches from 'nfl_coaches.csv' with (format csv, header true)
 ```
 
-Import teams first — `nfl_players.team_espn_id` references them. Verified: 0 unmatched team
-references.
+Import teams first — players and coaches both reference them by `team_espn_id`. Verified: 0
+unmatched team references.
 
 ## Columns
 
@@ -73,7 +76,13 @@ references.
 `jersey`, `position_abbr`, `position_name`, `position_group`, `team_espn_id`, `team_abbr`,
 `experience_years`, `is_rookie`, `status`, `headshot_url`, `name_is_ambiguous`.
 
-Conference and division come from the `groups` endpoint, not from the teams endpoint.
+**`nfl_coaches`** — `espn_coach_id` (stable key), `first_name`, `last_name`, `full_name`,
+`team_espn_id`, `team_abbr`, `team_display_name`, `conference`, `division`,
+`experience_years`, `headshot_url`, `name_is_ambiguous`.
+
+Conference and division come from the `groups` endpoint, not from the teams endpoint. Coach
+identity comes from the roster payloads, which carry a `coach` block; the headshot and
+experience come from the core-API coach record.
 
 ## Things worth knowing
 
@@ -94,6 +103,16 @@ only the team or the ID can:
 | Marcus Harris | KC DT, TEN CB |
 
 Any importer resolving a player by name must treat these as ambiguous and refuse to guess.
+
+**Coach headshots are only ~34% covered.** 11 of 32 coaches have a `headshot_url`; the rest
+are empty, mostly newly promoted coaches with thin profiles. The URL contains a non-derivable
+path segment (`/coaches/65/17553.jpg`), so it cannot be constructed from the ID the way player
+headshots can. Design the coach picker with an initials or logo fallback, not a broken image.
+Date of birth, birthplace and college are similarly sparse in the source and were excluded.
+
+**No two coaches share a full name, but two surnames collide** — Jim Harbaugh (LAC) and John
+Harbaugh (NYG), Matt LaFleur (GB) and Mike LaFleur (ARI). A search on `harbaugh` or `lafleur`
+returns two people, so a coach picker must display the team alongside the name.
 
 **ESPN uses `WSH` for Washington**, not `WAS`. Also `JAX` not `JAC`, and `LA` is ambiguous
 between `LAR` and `LAC`.
@@ -120,10 +139,13 @@ curl "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams"
 curl "https://site.api.espn.com/apis/site/v2/sports/football/nfl/groups"
 # then, for each of the 32 team ids:
 curl "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/{id}/roster"
+# coaches: id comes from each roster's coach block, then per coach:
+curl "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/seasons/{year}/coaches/{coachId}"
 ```
 
-Roughly 16 seconds and ~14 MB of raw JSON for a full refresh. Sequence the roster calls with a
-small delay — this is an undocumented API being used as a guest.
+Roughly 66 requests in total (2 + 32 rosters + 32 coaches), about 25 seconds and ~14 MB of raw
+JSON for a full refresh. Sequence the calls with a small delay — this is an undocumented API
+being used as a guest.
 
 **Refresh must be upsert-only.** A player who leaves every roster should be marked inactive,
 never deleted, or any stored pick referencing them breaks. A partially failed refresh must not
