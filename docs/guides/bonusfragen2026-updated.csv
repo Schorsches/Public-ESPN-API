@@ -1,0 +1,49 @@
+id;title;description;type;options;points;bonus_matchday;deadline_at;visible;scoring
+;Wer gewinnt den Super Bowl?;Ein Team auswählen;team_pick;@teams:all;10;1;2026-09-10T02:00;true;
+;Wer gewinnt die AFC Championship?;Ein AFC-Team auswählen;team_pick;@teams:conf=AFC;8;1;2026-09-10T02:00;true;
+;Wer gewinnt die NFC Championship?;Ein NFC-Team auswählen;team_pick;@teams:conf=NFC;8;1;2026-09-10T02:00;true;
+;Welche vier Teams erreichen die Conference Championships?;Genau vier Teams auswählen;multi_select;@teams:all;12;1;2026-09-10T02:00;true;per_correct_points=3,wrong_penalty=0,min_select=4,max_select=4
+;Welche Teams erreichen die Playoffs?;Genau vierzehn Teams auswählen;multi_select;@teams:all;14;1;2026-09-10T02:00;true;per_correct_points=1,wrong_penalty=0,min_select=14,max_select=14
+;Welches Team holt die meisten Siege in der Regular Season?;Ein Team auswählen;team_pick;@teams:all;6;1;2026-09-10T02:00;true;
+;Erreicht der amtierende Super-Bowl-Sieger erneut die Playoffs?;Titelverteidiger sind die Seattle Seahawks (Super Bowl LX). Ja oder Nein;single_choice;Ja|Nein;3;1;2026-09-10T02:00;true;
+;Gibt es in der Regular Season mindestens ein Unentschieden?;Ja oder Nein;single_choice;Ja|Nein;3;1;2026-09-10T02:00;true;
+;Endstand AFC East (Platz 1 bis 4);Teams in die richtige Reihenfolge bringen;ranking;@teams:div=AFC East;12;1;2026-09-10T02:00;true;per_position_points=2,all_correct_bonus=4
+;Endstand AFC North (Platz 1 bis 4);Teams in die richtige Reihenfolge bringen;ranking;@teams:div=AFC North;12;1;2026-09-10T02:00;true;per_position_points=2,all_correct_bonus=4
+;Endstand AFC South (Platz 1 bis 4);Teams in die richtige Reihenfolge bringen;ranking;@teams:div=AFC South;12;1;2026-09-10T02:00;true;per_position_points=2,all_correct_bonus=4
+;Endstand AFC West (Platz 1 bis 4);Teams in die richtige Reihenfolge bringen;ranking;@teams:div=AFC West;12;1;2026-09-10T02:00;true;per_position_points=2,all_correct_bonus=4
+;Endstand NFC East (Platz 1 bis 4);Teams in die richtige Reihenfolge bringen;ranking;@teams:div=NFC East;12;1;2026-09-10T02:00;true;per_position_points=2,all_correct_bonus=4
+;Endstand NFC North (Platz 1 bis 4);Teams in die richtige Reihenfolge bringen;ranking;@teams:div=NFC North;12;1;2026-09-10T02:00;true;per_position_points=2,all_correct_bonus=4
+;Endstand NFC South (Platz 1 bis 4);Teams in die richtige Reihenfolge bringen;ranking;@teams:div=NFC South;12;1;2026-09-10T02:00;true;per_position_points=2,all_correct_bonus=4
+;Endstand NFC West (Platz 1 bis 4);Teams in die richtige Reihenfolge bringen;ranking;@teams:div=NFC West;12;1;2026-09-10T02:00;true;per_position_points=2,all_correct_bonus=4
+;Wer wird MVP der Regular Season?;Einen Spieler auswählen;player_pick;@players:all;8;1;2026-09-10T02:00;true;
+;Wer wird Defensive Player of the Year?;Einen Spieler auswählen;player_pick;@players:all;6;1;2026-09-10T02:00;true;
+;Wer wird Offensive Rookie of the Year?;Einen Rookie auswählen;player_pick;@players:rookie=true;6;1;2026-09-10T02:00;true;
+;Wer wird Defensive Rookie of the Year?;Einen Rookie auswählen;player_pick;@players:rookie=true;6;1;2026-09-10T02:00;true;
+;Wer wird Comeback Player of the Year?;Einen Spieler auswählen;player_pick;@players:all;5;1;2026-09-10T02:00;true;
+;Wer wird Coach of the Year?;Einen Head Coach auswählen;coach_pick;@coaches:all;5;1;2026-09-10T02:00;true;
+;Welcher QB wirft die meisten Touchdown-Pässe?;Einen Quarterback auswählen;player_pick;@players:pos=QB;6;1;2026-09-10T02:00;true;
+;Welcher QB wirft die meisten Interceptions?;Einen Quarterback auswählen;player_pick;@players:pos=QB;5;1;2026-09-10T02:00;true;
+;Welcher QB ohne Playoff-Teilnahme wirft die meisten Passing Yards?;Einen Quarterback auswählen;player_pick;@players:pos=QB;6;1;2026-09-10T02:00;true;
+;Welcher Spieler erzielt die meisten Rushing Yards?;Einen Spieler auswählen;player_pick;@players:all;6;1;2026-09-10T02:00;true;
+;Welcher Spieler erzielt die meisten Receiving Yards?;Einen Spieler auswählen;player_pick;@players:all;6;1;2026-09-10T02:00;true;
+;Welcher Spieler erzielt die meisten Sacks?;Einen Spieler auswählen;player_pick;@players:all;5;1;2026-09-10T02:00;true;
+;Wie viele Passing Yards erzielt der Passing-Yards-Leader?;Zahl eintragen;numeric;;5;1;2026-09-10T02:00;true;tolerance=200,tolerance_points=2
+;Welches Team erzielt die meisten Punkte?;Ein Team auswählen;team_pick;@teams:all;5;1;2026-09-10T02:00;true;
+;Welches Team erzielt die wenigsten Punkte?;Ein Team auswählen;team_pick;@teams:all;5;1;2026-09-10T02:00;true;
+;Welches Team kassiert die meisten Strafen (Penalties)?;Ein Team auswählen;team_pick;@teams:all;5;1;2026-09-10T02:00;true;
+;Welches Team hat die meisten Turnover?;Ein Team auswählen;team_pick;@teams:all;5;1;2026-09-10T02:00;true;
+;Welches Team beendet die Regular Season mit der schlechtesten Bilanz?;Ein Team auswählen;team_pick;@teams:all;5;1;2026-09-10T02:00;true;
+;Welches Team, das letzte Saison die Playoffs verpasst hat, erreicht sie dieses Jahr?;Team mit dem besten Ergebnis gewinnt;team_pick;@teams:all;6;1;2026-09-10T02:00;true;
+;Welches Team, das letzte Saison die Playoffs erreicht hat, verpasst sie dieses Jahr?;Team mit dem schlechtesten Ergebnis gewinnt;team_pick;@teams:all;6;1;2026-09-10T02:00;true;
+;Welches Team wechselt zuerst den Head Coach?;Ein Team auswählen;team_pick;@teams:all;5;1;2026-09-10T02:00;true;
+;Welches Team wechselt zuerst den Starting-QB?;Ein Team auswählen;team_pick;@teams:all;5;1;2026-09-10T02:00;true;
+;Wie viele Head Coaches werden bis zum Ende der Regular Season entlassen?;Zahl eintragen;numeric;;4;1;2026-09-10T02:00;true;tolerance=1,tolerance_points=2
+;Wie viele Teams beenden die Regular Season mit mindestens 13 Siegen?;Zahl eintragen;numeric;;4;1;2026-09-10T02:00;true;tolerance=1,tolerance_points=2
+;Welches Team sichert sich den Top-Seed (Platz 1) in der AFC?;Ein AFC-Team auswählen;team_pick;@teams:conf=AFC;6;2;2026-11-19T02:00;true;
+;Welches Team sichert sich den Top-Seed (Platz 1) in der NFC?;Ein NFC-Team auswählen;team_pick;@teams:conf=NFC;6;2;2026-11-19T02:00;true;
+;Wer wird Super Bowl MVP?;Einen Spieler auswählen;player_pick;@players:all;6;3;2027-02-15T00:00;true;
+;Gesamtpunkte im Super Bowl;Summe beider Teams tippen;numeric;;5;3;2027-02-15T00:00;true;tolerance=3,tolerance_points=2
+;Welche Farbe hat das Gatorade-Bad im Super Bowl?;Eine Farbe auswählen;single_choice;Orange|Blau|Rot|Gelb|Lila|Grün|Klar oder Wasser|Kein Gatorade-Bad;5;3;2027-02-15T00:00;true;
+;Wie fällt der erste Score im Super Bowl?;Eine Option auswählen;single_choice;Touchdown|Field Goal|Safety;4;3;2027-02-15T00:00;true;
+;Gewinnt das Team, das den Münzwurf gewinnt, auch den Super Bowl?;Ja oder Nein;single_choice;Ja|Nein;3;3;2027-02-15T00:00;true;
+;Wie lange dauert die Nationalhymne im Super Bowl in Sekunden?;Zahl eintragen;numeric;;4;3;2027-02-15T00:00;true;tolerance=5,tolerance_points=2
