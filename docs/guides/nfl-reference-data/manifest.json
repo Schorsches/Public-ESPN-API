@@ -1,0 +1,10 @@
+{
+  "source": "ESPN public API",
+  "generated_at": "2026-08-09T05:58:05+00:00",
+  "season_year": 2026,
+  "season_type": 1,
+  "season_name": "Preseason",
+  "team_count": 32,
+  "player_count": 2968,
+  "ambiguous_names": 18
+}

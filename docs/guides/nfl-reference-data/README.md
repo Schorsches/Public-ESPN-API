@@ -1,0 +1,130 @@
+# NFL Reference Data — Teams & Players Snapshot
+
+A pre-fetched snapshot of NFL teams and players from the ESPN public API, so an application
+can seed its reference tables **without calling ESPN at all**.
+
+Generated once from 34 API requests (1 teams + 1 groups + 32 rosters). Importing these files
+costs **zero** requests.
+
+## Snapshot
+
+| | |
+|---|---|
+| Source | ESPN public API (unofficial, no key) |
+| Snapshot taken | 2026-08-09 |
+| Season | 2026 preseason |
+| Teams | 32 |
+| Players | 2,968 |
+| Rookies (`experience.years = 0`) | 660 |
+| Colliding full names | 9 names, 18 rows |
+
+## Files
+
+| File | Size | Use |
+|---|---|---|
+| `nfl_reference_seed.sql` | 514 KB | **Supabase / Postgres.** Creates tables, functions and indexes, then upserts everything. Idempotent. |
+| `nfl_teams.csv` | 4.7 KB | Table-editor or `\copy` import |
+| `nfl_players.csv` | 448 KB | Table-editor or `\copy` import |
+| `nfl_reference.slim.json` | 142 KB | **Client-side bundle.** Column-array format, headshot URLs derived. |
+| `nfl_reference.json` | 1.3 MB | Full object-per-row JSON for server-side processing |
+| `manifest.json` | — | Counts and provenance for verification |
+
+## Quickest path: SQL
+
+Paste `nfl_reference_seed.sql` into the Supabase SQL editor and run it. It:
+
+- enables `pg_trgm` and `unaccent`
+- creates `nfl_teams` and `nfl_players` with `create table if not exists`
+- creates the immutable normalisation functions and the trigram search index
+- upserts on the ESPN ID, so re-running updates rather than duplicating
+- ends with a verification query
+
+Expected result:
+
+```
+ teams | players | ambiguous | rookies | orphans
+-------+---------+-----------+---------+---------
+    32 |    2968 |        18 |     660 |       0
+```
+
+**Verified**: executed on PostgreSQL 16, runs in ~0.2 s, and produces identical counts on a
+second run.
+
+If you already have an `nfl_teams` table with a different shape, load the CSVs into staging
+tables and map the columns yourself rather than editing the seed.
+
+## CSV import
+
+```sql
+\copy nfl_teams   from 'nfl_teams.csv'   with (format csv, header true)
+\copy nfl_players from 'nfl_players.csv' with (format csv, header true)
+```
+
+Import teams first — `nfl_players.team_espn_id` references them. Verified: 0 unmatched team
+references.
+
+## Columns
+
+**`nfl_teams`** — `espn_team_id` (stable key), `abbreviation`, `display_name`,
+`short_display_name`, `name`, `location`, `slug`, `conference`, `division`, `color`,
+`alternate_color`, `logo_url`.
+
+**`nfl_players`** — `espn_athlete_id` (stable key), `full_name`, `first_name`, `last_name`,
+`jersey`, `position_abbr`, `position_name`, `position_group`, `team_espn_id`, `team_abbr`,
+`experience_years`, `is_rookie`, `status`, `headshot_url`, `name_is_ambiguous`.
+
+Conference and division come from the `groups` endpoint, not from the teams endpoint.
+
+## Things worth knowing
+
+**`name_is_ambiguous` is not decoration.** Nine full names are shared by two active players
+each, and in two cases they share a position as well, so position cannot disambiguate them —
+only the team or the ID can:
+
+| Name | Players |
+|---|---|
+| Justin Jefferson | MIN WR, CLE LB |
+| DeVonta Smith | PHI WR, CAR CB |
+| Christian Jones | CIN OT, ARI OT |
+| Jaylon Jones | CHI CB, IND CB |
+| Brandon Johnson | LV WR, SEA CB |
+| Byron Young | LAR LB, PHI DT |
+| Cam Miller | MIA QB, CAR CB |
+| Devin Neal | NO RB, JAX S |
+| Marcus Harris | KC DT, TEN CB |
+
+Any importer resolving a player by name must treat these as ambiguous and refuse to guess.
+
+**ESPN uses `WSH` for Washington**, not `WAS`. Also `JAX` not `JAC`, and `LA` is ambiguous
+between `LAR` and `LAC`.
+
+**Names need normalisation for search.** The dataset contains apostrophes (`Ja'Mori Maclin`),
+periods (`Frank Gore Jr.`) and hyphens (`Sedrick Van Pran-Granger`). The seed indexes four
+forms — spaced and squashed, in both `First Last` and `Last First` order — so `ocyrus`,
+`O'Cyrus`, `jackson, lamar` and `vanpran` all match.
+
+**Missing values are normal.** 37 players have no jersey number and 9 have no headshot URL.
+Both are nullable. Headshots follow
+`https://a.espncdn.com/i/headshots/nfl/players/full/{espn_athlete_id}.png`, so the slim JSON
+omits the column — construct it client-side with an `onerror` fallback.
+
+**This snapshot is preseason.** Rosters are at their largest (90-man limits) and will be cut
+to 53 before Week 1. Treat `is_rookie` and `status` as accurate for the snapshot date only.
+
+## Refreshing
+
+Re-fetch and regenerate rather than editing by hand:
+
+```bash
+curl "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams"
+curl "https://site.api.espn.com/apis/site/v2/sports/football/nfl/groups"
+# then, for each of the 32 team ids:
+curl "https://site.api.espn.com/apis/site/v2/sports/football/nfl/teams/{id}/roster"
+```
+
+Roughly 16 seconds and ~14 MB of raw JSON for a full refresh. Sequence the roster calls with a
+small delay — this is an undocumented API being used as a guest.
+
+**Refresh must be upsert-only.** A player who leaves every roster should be marked inactive,
+never deleted, or any stored pick referencing them breaks. A partially failed refresh must not
+deactivate anybody.

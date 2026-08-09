@@ -361,17 +361,48 @@ imported as `answer_kind = 'text'` exactly as today. **Nothing about the CSV bec
 Search the local cache, not ESPN.
 
 Enable `pg_trgm` and `unaccent`. Add a generated, normalised search column that indexes both
-name orders so `mahomes`, `patrick mahomes` and `mahomes, patrick` all hit:
+name orders so `mahomes`, `patrick mahomes` and `mahomes, patrick` all hit.
+
+**`unaccent()` is `STABLE`, not `IMMUTABLE`, so it cannot be used directly in a generated
+column** — Postgres rejects it with "generation expression is not immutable". The supported
+workaround is an immutable wrapper using the two-argument form, which pins the dictionary and
+makes the result deterministic. Two wrappers are needed: one that turns punctuation into
+spaces, and one that removes it entirely, because a player searching `ocyrus` must match
+`O'Cyrus` and a spaces-only normalisation yields `o cyrus`, which does not.
+
+The following is verified to run on PostgreSQL 16:
 
 ```sql
-alter table nfl_players add column search_text text
+create extension if not exists pg_trgm;
+create extension if not exists unaccent;
+
+create or replace function nfl_norm(txt text) returns text
+language sql immutable parallel safe as $$
+  select trim(regexp_replace(lower(unaccent('unaccent', coalesce(txt,''))), '[^a-z0-9]+', ' ', 'g'))
+$$;
+
+create or replace function nfl_squash(txt text) returns text
+language sql immutable parallel safe as $$
+  select regexp_replace(lower(unaccent('unaccent', coalesce(txt,''))), '[^a-z0-9]+', '', 'g')
+$$;
+
+alter table nfl_players
+  add column if not exists search_text text
   generated always as (
-    lower(unaccent(full_name)) || ' ' ||
-    lower(unaccent(coalesce(last_name,''))) || ', ' || lower(unaccent(coalesce(first_name,'')))
+    nfl_norm(full_name) || ' ' ||
+    nfl_norm(coalesce(last_name,'') || ' ' || coalesce(first_name,'')) || ' ' ||
+    nfl_squash(full_name) || ' ' ||
+    nfl_squash(coalesce(last_name,'') || coalesce(first_name,''))
   ) stored;
 
 create index nfl_players_search_trgm on nfl_players using gin (search_text gin_trgm_ops);
 ```
+
+Match a query by normalising it the same way — `search_text like '%'||nfl_squash($1)||'%' or
+search_text like '%'||nfl_norm($1)||'%'`. Verified against the real 2,968-row dataset: this
+resolves `mahomes`, `Jefferson, Justin`, `ocyrus`, `van pran` and `jamori` correctly. Note that
+`LIKE` does not cover misspellings — use `similarity()` from `pg_trgm` for that, ranked below
+the exact and prefix matches.
 
 Expose search as a Postgres function taking the query plus optional `team_id`, `position_abbr`,
 `position_group` and `rookies_only` filters. Rank exact prefix above word prefix above trigram
