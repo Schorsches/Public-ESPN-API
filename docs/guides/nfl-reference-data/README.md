@@ -29,6 +29,7 @@ these files costs **zero** requests.
 | `nfl_coaches.csv` | 3.3 KB | Head coach per team, with team name |
 | `nfl_reference.slim.json` | 144 KB | **Client-side bundle.** Column-array format, headshot URLs derived. |
 | `nfl_reference.json` | 1.3 MB | Full object-per-row JSON for server-side processing |
+| `nfl_stadiums.slim.json` | 8 KB | Stadium roof, surface, coordinates and venue, keyed by ESPN abbreviation |
 | `manifest.json` | — | Counts and provenance for verification |
 
 ## Quickest path: SQL
@@ -129,6 +130,35 @@ omits the column — construct it client-side with an `onerror` fallback.
 
 **This snapshot is preseason.** Rosters are at their largest (90-man limits) and will be cut
 to 53 before Week 1. Treat `is_rookie` and `status` as accurate for the snapshot date only.
+
+## Stadiums
+
+`nfl_stadiums.slim.json` maps each ESPN team abbreviation to its home venue: `venue`, `city`,
+`state`, `roof`, `surface`, `espn_indoor`, `lat`, `long`. Roof, surface and coordinates come
+from a supplied dataset; venue, city, state and `espn_indoor` come from ESPN venue records.
+
+Two source abbreviations were remapped to ESPN's: **`LA` → `LAR`** and **`WAS` → `WSH`**.
+
+**ESPN venue records carry no coordinates** — only `address`, `grass` and `indoor` — so the
+supplied dataset is the only lat/long source, cross-checked against ESPN's reported state.
+
+Corrections applied, each recorded in a `note` on the affected entry:
+
+- **PHI** — latitude was `36.900833`, placing Lincoln Financial Field 334 km south in the
+  Atlantic. Longitude was already exact, so this was a single leading digit. Corrected to
+  `39.900833`.
+- **BUF** — Buffalo moved into the new Highmark Stadium for 2026 (ESPN venue 11938). Surface
+  corrected from turf to grass, and coordinates moved 441 m west from the old Ralph Wilson
+  Stadium site to the new one, geocoded from OpenStreetMap.
+- **LAR / LAC** — not an error. `roof` is `yes` while ESPN reports `indoor: false`, because
+  SoFi's canopy covers the field but the sides are open. Both readings are kept, so use
+  `roof` for shelter and `espn_indoor` for climate control.
+
+`LAR`/`LAC` and `NYG`/`NYJ` share a venue and therefore share coordinates.
+
+After correction, all 32 coordinates fall inside the state ESPN reports for that venue, and
+roof/surface agree with ESPN's `indoor`/`grass` for 30 of 32 — the two exceptions being the
+SoFi definitional difference.
 
 ## Refreshing
 
