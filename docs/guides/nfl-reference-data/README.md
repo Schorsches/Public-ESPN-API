@@ -30,6 +30,7 @@ these files costs **zero** requests.
 | `nfl_reference.slim.json` | 144 KB | **Client-side bundle.** Column-array format, headshot URLs derived. |
 | `nfl_reference.json` | 1.3 MB | Full object-per-row JSON for server-side processing |
 | `nfl_stadiums.slim.json` | 8 KB | Stadium roof, surface, coordinates and venue, keyed by ESPN abbreviation |
+| `nfl_stadiums.csv` | 3.1 KB | Same stadium data as rows, for table-editor or `\copy` import |
 | `manifest.json` | — | Counts and provenance for verification |
 
 ## Quickest path: SQL
@@ -136,6 +137,11 @@ to 53 before Week 1. Treat `is_rookie` and `status` as accurate for the snapshot
 `nfl_stadiums.slim.json` maps each ESPN team abbreviation to its home venue: `venue`, `city`,
 `state`, `roof`, `surface`, `espn_indoor`, `lat`, `long`. Roof, surface and coordinates come
 from a supplied dataset; venue, city, state and `espn_indoor` come from ESPN venue records.
+
+`nfl_stadiums.csv` carries the identical data as 32 rows, verified field-for-field against the
+JSON. Because CSV has no key, the abbreviation is a column, `espn_team_abbr`. The `note` column
+is populated on the four entries described below and empty elsewhere; it contains commas, so
+those fields are quoted — parse it as proper CSV rather than splitting on commas.
 
 Two source abbreviations were remapped to ESPN's: **`LA` → `LAR`** and **`WAS` → `WSH`**.
 
