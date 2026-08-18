@@ -33,6 +33,9 @@ these files costs **zero** requests.
 | `nfl_stadiums.csv` | 3.1 KB | Same stadium data as rows, for table-editor or `\copy` import |
 | `manifest.json` | — | Counts and provenance for verification |
 
+Team logos are built into a retina spritesheet in [`../nfl-logo-sprite/`](../nfl-logo-sprite/),
+keyed by the same ESPN abbreviations.
+
 ## Quickest path: SQL
 
 Paste `nfl_reference_seed.sql` into the Supabase SQL editor and run it. It:
