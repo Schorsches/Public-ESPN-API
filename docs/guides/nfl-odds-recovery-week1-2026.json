@@ -1,0 +1,72 @@
+{
+ "meta": {
+  "purpose": "Recovery of odds for the two 2026 week-1 games that were already FINAL when odds capture began, and whose odds are therefore absent from the scoreboard payload.",
+  "recovered_at": "2026-09-13T13:36:59+00:00",
+  "sources": [
+   "https://site.api.espn.com/apis/site/v2/sports/football/nfl/summary?event={id} -> pickcenter[0]",
+   "https://sports.core.api.espn.com/v2/sports/football/leagues/nfl/events/{id}/competitions/{id}/odds"
+  ],
+  "note": "Both sources were queried independently and agree on every moneyline value.",
+  "games": 2
+ },
+ "odds": [
+  {
+   "espn_event_id": "401872656",
+   "short_name": "NE @ SEA",
+   "kickoff_utc": "2026-09-10T00:20Z",
+   "season_year": 2026,
+   "season_type": 2,
+   "week": 1,
+   "home_team": "SEA",
+   "away_team": "NE",
+   "final_home_score": 13,
+   "final_away_score": 10,
+   "provider": "DraftKings",
+   "provider_id": "100",
+   "details": "SEA -3",
+   "spread": -3.0,
+   "over_under": 44.5,
+   "moneyline_home_close": -170,
+   "moneyline_away_close": 142,
+   "moneyline_home_open": -192,
+   "moneyline_away_open": 160,
+   "implied_home_raw": 0.62963,
+   "implied_away_raw": 0.413223,
+   "overround": 1.042853,
+   "p_home_devigged": 0.603757,
+   "p_away_devigged": 0.396243,
+   "line_moved": true,
+   "cross_checked_against_core_api": true,
+   "recovered_from": "site summary?event= (pickcenter) + core competitions/{id}/odds"
+  },
+  {
+   "espn_event_id": "401872657",
+   "short_name": "SF VS LAR",
+   "kickoff_utc": "2026-09-11T00:35Z",
+   "season_year": 2026,
+   "season_type": 2,
+   "week": 1,
+   "home_team": "LAR",
+   "away_team": "SF",
+   "final_home_score": 7,
+   "final_away_score": 27,
+   "provider": "DraftKings",
+   "provider_id": "100",
+   "details": "LAR -3.5",
+   "spread": -3.5,
+   "over_under": 47.5,
+   "moneyline_home_close": -218,
+   "moneyline_away_close": 180,
+   "moneyline_home_open": -155,
+   "moneyline_away_open": 130,
+   "implied_home_raw": 0.685535,
+   "implied_away_raw": 0.357143,
+   "overround": 1.042677,
+   "p_home_devigged": 0.657475,
+   "p_away_devigged": 0.342525,
+   "line_moved": true,
+   "cross_checked_against_core_api": true,
+   "recovered_from": "site summary?event= (pickcenter) + core competitions/{id}/odds"
+  }
+ ]
+}
