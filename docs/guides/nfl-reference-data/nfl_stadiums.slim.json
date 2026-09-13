@@ -1,0 +1,360 @@
+{
+ "meta": {
+  "description": "NFL stadium locations keyed by ESPN team abbreviation",
+  "generated_at": "2026-08-10T11:10:06+00:00",
+  "season_year": 2026,
+  "team_count": 32,
+  "key": "ESPN team abbreviation (matches nfl_reference.json and the scoreboard API)",
+  "sources": {
+   "roof, surface, lat, long": "supplied locations.csv",
+   "venue, city, state, espn_indoor": "ESPN core API venue records",
+   "BUF lat/long": "OpenStreetMap Nominatim (new Highmark Stadium; ESPN has no coordinates)"
+  },
+  "abbreviation_remapping": {
+   "LA": "LAR",
+   "WAS": "WSH"
+  },
+  "shared_venues": {
+   "SoFi Stadium": [
+    "LAR",
+    "LAC"
+   ],
+   "MetLife Stadium": [
+    "NYG",
+    "NYJ"
+   ]
+  },
+  "corrections_applied": [
+   "PHI latitude",
+   "BUF surface",
+   "BUF coordinates (new stadium)"
+  ],
+  "validation": "31 of 32 supplied coordinates fell inside the state ESPN reports for that venue; PHI was the exception and was corrected. roof/surface agreed with ESPN indoor/grass for 29 of 32; BUF was corrected and SoFi (LAR, LAC) is a definitional difference, not an error."
+ },
+ "stadiums": {
+  "HOU": {
+   "venue": "NRG Stadium",
+   "city": "Houston",
+   "state": "TX",
+   "roof": "retractable",
+   "surface": "turf",
+   "espn_indoor": true,
+   "lat": 29.684723,
+   "long": -95.410835
+  },
+  "SEA": {
+   "venue": "Lumen Field",
+   "city": "Seattle",
+   "state": "WA",
+   "roof": "no",
+   "surface": "turf",
+   "espn_indoor": false,
+   "lat": 47.5952,
+   "long": -122.3316
+  },
+  "BUF": {
+   "venue": "Highmark Stadium",
+   "city": "Orchard Park",
+   "state": "NY",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 42.773029,
+   "long": -78.792193,
+   "note": "Buffalo moved into the new Highmark Stadium for 2026 (ESPN venue 11938). Surface corrected from turf to grass per ESPN. Coordinates replaced: the supplied pair was the previous stadium (Ralph Wilson Stadium, 1 Bills Drive), 441 m east. New coordinates are the new Highmark Stadium at 10 Community College Drive, geocoded from OpenStreetMap because ESPN venue records carry no coordinates."
+  },
+  "PIT": {
+   "venue": "Acrisure Stadium",
+   "city": "Pittsburgh",
+   "state": "PA",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 40.446667,
+   "long": -80.01583
+  },
+  "ARI": {
+   "venue": "State Farm Stadium",
+   "city": "Glendale",
+   "state": "AZ",
+   "roof": "retractable",
+   "surface": "grass",
+   "espn_indoor": true,
+   "lat": 33.528,
+   "long": -112.263
+  },
+  "LAR": {
+   "venue": "SoFi Stadium",
+   "city": "Inglewood",
+   "state": "CA",
+   "roof": "yes",
+   "surface": "turf",
+   "espn_indoor": false,
+   "lat": 33.953,
+   "long": -118.339,
+   "note": "roof kept as supplied ('yes'); ESPN reports indoor=false because SoFi's canopy covers the field but the sides are open. Both views are available via roof and espn_indoor."
+  },
+  "MIA": {
+   "venue": "Hard Rock Stadium",
+   "city": "Miami Gardens",
+   "state": "FL",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 25.958055,
+   "long": -80.23889
+  },
+  "BAL": {
+   "venue": "M&T Bank Stadium",
+   "city": "Baltimore",
+   "state": "MD",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 39.278057,
+   "long": -76.62278
+  },
+  "CLE": {
+   "venue": "Huntington Bank Field",
+   "city": "Cleveland",
+   "state": "OH",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 41.50611,
+   "long": -81.69945
+  },
+  "DEN": {
+   "venue": "Empower Field at Mile High",
+   "city": "Denver",
+   "state": "CO",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 39.74389,
+   "long": -105.02
+  },
+  "DET": {
+   "venue": "Ford Field",
+   "city": "Detroit",
+   "state": "MI",
+   "roof": "yes",
+   "surface": "turf",
+   "espn_indoor": true,
+   "lat": 42.34,
+   "long": -83.045555
+  },
+  "SF": {
+   "venue": "Levi's Stadium",
+   "city": "Santa Clara",
+   "state": "CA",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 37.403,
+   "long": -121.97
+  },
+  "LV": {
+   "venue": "Allegiant Stadium",
+   "city": "Las Vegas",
+   "state": "NV",
+   "roof": "yes",
+   "surface": "grass",
+   "espn_indoor": true,
+   "lat": 36.090557,
+   "long": -115.18389
+  },
+  "KC": {
+   "venue": "GEHA Field at Arrowhead Stadium",
+   "city": "Kansas City",
+   "state": "MO",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 39.04889,
+   "long": -94.48389
+  },
+  "NE": {
+   "venue": "Gillette Stadium",
+   "city": "Foxborough",
+   "state": "MA",
+   "roof": "no",
+   "surface": "turf",
+   "espn_indoor": false,
+   "lat": 42.091,
+   "long": -71.264
+  },
+  "NO": {
+   "venue": "Caesars Superdome",
+   "city": "New Orleans",
+   "state": "LA",
+   "roof": "yes",
+   "surface": "turf",
+   "espn_indoor": true,
+   "lat": 29.950832,
+   "long": -90.08111
+  },
+  "TEN": {
+   "venue": "Nissan Stadium",
+   "city": "Nashville",
+   "state": "TN",
+   "roof": "no",
+   "surface": "turf",
+   "espn_indoor": false,
+   "lat": 36.16639,
+   "long": -86.771385
+  },
+  "LAC": {
+   "venue": "SoFi Stadium",
+   "city": "Inglewood",
+   "state": "CA",
+   "roof": "yes",
+   "surface": "turf",
+   "espn_indoor": false,
+   "lat": 33.953,
+   "long": -118.339,
+   "note": "roof kept as supplied ('yes'); ESPN reports indoor=false because SoFi's canopy covers the field but the sides are open. Both views are available via roof and espn_indoor."
+  },
+  "CIN": {
+   "venue": "Paycor Stadium",
+   "city": "Cincinnati",
+   "state": "OH",
+   "roof": "no",
+   "surface": "turf",
+   "espn_indoor": false,
+   "lat": 39.095,
+   "long": -84.516
+  },
+  "NYG": {
+   "venue": "MetLife Stadium",
+   "city": "East Rutherford",
+   "state": "NJ",
+   "roof": "no",
+   "surface": "turf",
+   "espn_indoor": false,
+   "lat": 40.8,
+   "long": -74.066666
+  },
+  "JAX": {
+   "venue": "EverBank Stadium",
+   "city": "Jacksonville",
+   "state": "FL",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 30.323889,
+   "long": -81.6375
+  },
+  "TB": {
+   "venue": "Raymond James Stadium",
+   "city": "Tampa",
+   "state": "FL",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 27.975834,
+   "long": -82.503334
+  },
+  "ATL": {
+   "venue": "Mercedes-Benz Stadium",
+   "city": "Atlanta",
+   "state": "GA",
+   "roof": "retractable",
+   "surface": "turf",
+   "espn_indoor": true,
+   "lat": 33.755554,
+   "long": -84.4
+  },
+  "MIN": {
+   "venue": "U.S. Bank Stadium",
+   "city": "Minneapolis",
+   "state": "MN",
+   "roof": "yes",
+   "surface": "turf",
+   "espn_indoor": true,
+   "lat": 44.974,
+   "long": -93.258
+  },
+  "DAL": {
+   "venue": "AT&T Stadium",
+   "city": "Arlington",
+   "state": "TX",
+   "roof": "retractable",
+   "surface": "turf",
+   "espn_indoor": true,
+   "lat": 32.747776,
+   "long": -97.09278
+  },
+  "CAR": {
+   "venue": "Bank of America Stadium",
+   "city": "Charlotte",
+   "state": "NC",
+   "roof": "no",
+   "surface": "turf",
+   "espn_indoor": false,
+   "lat": 35.225834,
+   "long": -80.852776
+  },
+  "GB": {
+   "venue": "Lambeau Field",
+   "city": "Green Bay",
+   "state": "WI",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 44.50139,
+   "long": -88.062225
+  },
+  "CHI": {
+   "venue": "Soldier Field",
+   "city": "Chicago",
+   "state": "IL",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 41.8623,
+   "long": -87.6167
+  },
+  "NYJ": {
+   "venue": "MetLife Stadium",
+   "city": "East Rutherford",
+   "state": "NJ",
+   "roof": "no",
+   "surface": "turf",
+   "espn_indoor": false,
+   "lat": 40.8,
+   "long": -74.066666
+  },
+  "PHI": {
+   "venue": "Lincoln Financial Field",
+   "city": "Philadelphia",
+   "state": "PA",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 39.900833,
+   "long": -75.1675,
+   "note": "latitude corrected from 36.900833 (single-digit error; original point lay 334 km south in the Atlantic). Longitude was already correct."
+  },
+  "IND": {
+   "venue": "Lucas Oil Stadium",
+   "city": "Indianapolis",
+   "state": "IN",
+   "roof": "retractable",
+   "surface": "turf",
+   "espn_indoor": true,
+   "lat": 39.75,
+   "long": -86.15
+  },
+  "WSH": {
+   "venue": "Northwest Stadium",
+   "city": "Landover",
+   "state": "MD",
+   "roof": "no",
+   "surface": "grass",
+   "espn_indoor": false,
+   "lat": 38.907776,
+   "long": -76.86444
+  }
+ }
+}

@@ -1,0 +1,33 @@
+espn_team_abbr,venue,city,state,roof,surface,espn_indoor,lat,long,note
+ARI,State Farm Stadium,Glendale,AZ,retractable,grass,true,33.528,-112.263,
+ATL,Mercedes-Benz Stadium,Atlanta,GA,retractable,turf,true,33.755554,-84.4,
+BAL,M&T Bank Stadium,Baltimore,MD,no,grass,false,39.278057,-76.62278,
+BUF,Highmark Stadium,Orchard Park,NY,no,grass,false,42.773029,-78.792193,"Buffalo moved into the new Highmark Stadium for 2026 (ESPN venue 11938). Surface corrected from turf to grass per ESPN. Coordinates replaced: the supplied pair was the previous stadium (Ralph Wilson Stadium, 1 Bills Drive), 441 m east. New coordinates are the new Highmark Stadium at 10 Community College Drive, geocoded from OpenStreetMap because ESPN venue records carry no coordinates."
+CAR,Bank of America Stadium,Charlotte,NC,no,turf,false,35.225834,-80.852776,
+CHI,Soldier Field,Chicago,IL,no,grass,false,41.8623,-87.6167,
+CIN,Paycor Stadium,Cincinnati,OH,no,turf,false,39.095,-84.516,
+CLE,Huntington Bank Field,Cleveland,OH,no,grass,false,41.50611,-81.69945,
+DAL,AT&T Stadium,Arlington,TX,retractable,turf,true,32.747776,-97.09278,
+DEN,Empower Field at Mile High,Denver,CO,no,grass,false,39.74389,-105.02,
+DET,Ford Field,Detroit,MI,yes,turf,true,42.34,-83.045555,
+GB,Lambeau Field,Green Bay,WI,no,grass,false,44.50139,-88.062225,
+HOU,NRG Stadium,Houston,TX,retractable,turf,true,29.684723,-95.410835,
+IND,Lucas Oil Stadium,Indianapolis,IN,retractable,turf,true,39.75,-86.15,
+JAX,EverBank Stadium,Jacksonville,FL,no,grass,false,30.323889,-81.6375,
+KC,GEHA Field at Arrowhead Stadium,Kansas City,MO,no,grass,false,39.04889,-94.48389,
+LAC,SoFi Stadium,Inglewood,CA,yes,turf,false,33.953,-118.339,roof kept as supplied ('yes'); ESPN reports indoor=false because SoFi's canopy covers the field but the sides are open. Both views are available via roof and espn_indoor.
+LAR,SoFi Stadium,Inglewood,CA,yes,turf,false,33.953,-118.339,roof kept as supplied ('yes'); ESPN reports indoor=false because SoFi's canopy covers the field but the sides are open. Both views are available via roof and espn_indoor.
+LV,Allegiant Stadium,Las Vegas,NV,yes,grass,true,36.090557,-115.18389,
+MIA,Hard Rock Stadium,Miami Gardens,FL,no,grass,false,25.958055,-80.23889,
+MIN,U.S. Bank Stadium,Minneapolis,MN,yes,turf,true,44.974,-93.258,
+NE,Gillette Stadium,Foxborough,MA,no,turf,false,42.091,-71.264,
+NO,Caesars Superdome,New Orleans,LA,yes,turf,true,29.950832,-90.08111,
+NYG,MetLife Stadium,East Rutherford,NJ,no,turf,false,40.8,-74.066666,
+NYJ,MetLife Stadium,East Rutherford,NJ,no,turf,false,40.8,-74.066666,
+PHI,Lincoln Financial Field,Philadelphia,PA,no,grass,false,39.900833,-75.1675,latitude corrected from 36.900833 (single-digit error; original point lay 334 km south in the Atlantic). Longitude was already correct.
+PIT,Acrisure Stadium,Pittsburgh,PA,no,grass,false,40.446667,-80.01583,
+SEA,Lumen Field,Seattle,WA,no,turf,false,47.5952,-122.3316,
+SF,Levi's Stadium,Santa Clara,CA,no,grass,false,37.403,-121.97,
+TB,Raymond James Stadium,Tampa,FL,no,grass,false,27.975834,-82.503334,
+TEN,Nissan Stadium,Nashville,TN,no,turf,false,36.16639,-86.771385,
+WSH,Northwest Stadium,Landover,MD,no,grass,false,38.907776,-76.86444,
