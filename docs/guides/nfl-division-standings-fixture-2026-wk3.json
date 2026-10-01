@@ -1,0 +1,870 @@
+{
+ "meta": {
+  "purpose": "Test fixture: real division standings after regular-season week 3 of 2026, parsed and ordered as the app should render them.",
+  "as_of_utc": "2026-10-01T14:50:00Z",
+  "games_played_per_team": 3,
+  "state": "weeks 1-3 fully final; week 4 not yet started",
+  "source": "https://site.api.espn.com/apis/v2/sports/football/nfl/standings?level=3&season=2026",
+  "ordering_rule": "sort each division ascending by playoff_seed; rank = position after sorting",
+  "verification": "Every wins/losses/ties, division record, conference record, points-for and points-against value was recomputed independently from the 48 final game results: 0 mismatches across 160 comparisons.",
+  "note": "Fixture is a snapshot. Values change as games finish; use it to test parsing and ordering, not as live data."
+ },
+ "divisions": [
+  {
+   "conference": "AFC",
+   "division": "AFC East",
+   "espn_division_id": "4",
+   "teams": [
+    {
+     "abbr": "BUF",
+     "espn_team_id": "2",
+     "wins": 3,
+     "losses": 0,
+     "ties": 0,
+     "win_pct": 1.0,
+     "div_record": [
+      0,
+      0,
+      0
+     ],
+     "conf_record": [
+      2,
+      0,
+      0
+     ],
+     "points_for": 101,
+     "points_against": 78,
+     "point_diff": 23,
+     "streak": "W3",
+     "streak_value": 3,
+     "playoff_seed": 2,
+     "rank": 1
+    },
+    {
+     "abbr": "NYJ",
+     "espn_team_id": "20",
+     "wins": 1,
+     "losses": 2,
+     "ties": 0,
+     "win_pct": 0.3333,
+     "div_record": [
+      0,
+      0,
+      0
+     ],
+     "conf_record": [
+      1,
+      0,
+      0
+     ],
+     "points_for": 64,
+     "points_against": 61,
+     "point_diff": 3,
+     "streak": "L2",
+     "streak_value": -2,
+     "playoff_seed": 10,
+     "rank": 2
+    },
+    {
+     "abbr": "NE",
+     "espn_team_id": "17",
+     "wins": 1,
+     "losses": 2,
+     "ties": 0,
+     "win_pct": 0.3333,
+     "div_record": [
+      0,
+      0,
+      0
+     ],
+     "conf_record": [
+      1,
+      1,
+      0
+     ],
+     "points_for": 36,
+     "points_against": 51,
+     "point_diff": -15,
+     "streak": "L1",
+     "streak_value": -1,
+     "playoff_seed": 11,
+     "rank": 3
+    },
+    {
+     "abbr": "MIA",
+     "espn_team_id": "15",
+     "wins": 0,
+     "losses": 3,
+     "ties": 0,
+     "win_pct": 0.0,
+     "div_record": [
+      0,
+      0,
+      0
+     ],
+     "conf_record": [
+      0,
+      2,
+      0
+     ],
+     "points_for": 36,
+     "points_against": 86,
+     "point_diff": -50,
+     "streak": "L3",
+     "streak_value": -3,
+     "playoff_seed": 13,
+     "rank": 4
+    }
+   ]
+  },
+  {
+   "conference": "AFC",
+   "division": "AFC North",
+   "espn_division_id": "12",
+   "teams": [
+    {
+     "abbr": "PIT",
+     "espn_team_id": "23",
+     "wins": 2,
+     "losses": 1,
+     "ties": 0,
+     "win_pct": 0.6667,
+     "div_record": [
+      1,
+      0,
+      0
+     ],
+     "conf_record": [
+      1,
+      1,
+      0
+     ],
+     "points_for": 53,
+     "points_against": 60,
+     "point_diff": -7,
+     "streak": "W1",
+     "streak_value": 1,
+     "playoff_seed": 4,
+     "rank": 1
+    },
+    {
+     "abbr": "BAL",
+     "espn_team_id": "33",
+     "wins": 2,
+     "losses": 1,
+     "ties": 0,
+     "win_pct": 0.6667,
+     "div_record": [
+      0,
+      0,
+      0
+     ],
+     "conf_record": [
+      1,
+      0,
+      0
+     ],
+     "points_for": 92,
+     "points_against": 78,
+     "point_diff": 14,
+     "streak": "W1",
+     "streak_value": 1,
+     "playoff_seed": 6,
+     "rank": 2
+    },
+    {
+     "abbr": "CLE",
+     "espn_team_id": "5",
+     "wins": 2,
+     "losses": 1,
+     "ties": 0,
+     "win_pct": 0.6667,
+     "div_record": [
+      0,
+      0,
+      0
+     ],
+     "conf_record": [
+      0,
+      1,
+      0
+     ],
+     "points_for": 54,
+     "points_against": 71,
+     "point_diff": -17,
+     "streak": "W2",
+     "streak_value": 2,
+     "playoff_seed": 8,
+     "rank": 3
+    },
+    {
+     "abbr": "CIN",
+     "espn_team_id": "4",
+     "wins": 2,
+     "losses": 1,
+     "ties": 0,
+     "win_pct": 0.6667,
+     "div_record": [
+      0,
+      1,
+      0
+     ],
+     "conf_record": [
+      1,
+      1,
+      0
+     ],
+     "points_for": 80,
+     "points_against": 63,
+     "point_diff": 17,
+     "streak": "L1",
+     "streak_value": -1,
+     "playoff_seed": 9,
+     "rank": 4
+    }
+   ]
+  },
+  {
+   "conference": "AFC",
+   "division": "AFC South",
+   "espn_division_id": "13",
+   "teams": [
+    {
+     "abbr": "JAX",
+     "espn_team_id": "30",
+     "wins": 2,
+     "losses": 1,
+     "ties": 0,
+     "win_pct": 0.6667,
+     "div_record": [
+      0,
+      0,
+      0
+     ],
+     "conf_record": [
+      2,
+      1,
+      0
+     ],
+     "points_for": 82,
+     "points_against": 36,
+     "point_diff": 46,
+     "streak": "W1",
+     "streak_value": 1,
+     "playoff_seed": 3,
+     "rank": 1
+    },
+    {
+     "abbr": "IND",
+     "espn_team_id": "11",
+     "wins": 1,
+     "losses": 2,
+     "ties": 0,
+     "win_pct": 0.3333,
+     "div_record": [
+      1,
+      0,
+      0
+     ],
+     "conf_record": [
+      1,
+      2,
+      0
+     ],
+     "points_for": 72,
+     "points_against": 91,
+     "point_diff": -19,
+     "streak": "W1",
+     "streak_value": 1,
+     "playoff_seed": 12,
+     "rank": 2
+    },
+    {
+     "abbr": "TEN",
+     "espn_team_id": "10",
+     "wins": 0,
+     "losses": 3,
+     "ties": 0,
+     "win_pct": 0.0,
+     "div_record": [
+      0,
+      0,
+      0
+     ],
+     "conf_record": [
+      0,
+      1,
+      0
+     ],
+     "points_for": 37,
+     "points_against": 59,
+     "point_diff": -22,
+     "streak": "L3",
+     "streak_value": -3,
+     "playoff_seed": 15,
+     "rank": 3
+    },
+    {
+     "abbr": "HOU",
+     "espn_team_id": "34",
+     "wins": 0,
+     "losses": 3,
+     "ties": 0,
+     "win_pct": 0.0,
+     "div_record": [
+      0,
+      1,
+      0
+     ],
+     "conf_record": [
+      0,
+      3,
+      0
+     ],
+     "points_for": 54,
+     "points_against": 75,
+     "point_diff": -21,
+     "streak": "L3",
+     "streak_value": -3,
+     "playoff_seed": 16,
+     "rank": 4
+    }
+   ]
+  },
+  {
+   "conference": "AFC",
+   "division": "AFC West",
+   "espn_division_id": "6",
+   "teams": [
+    {
+     "abbr": "KC",
+     "espn_team_id": "12",
+     "wins": 3,
+     "losses": 0,
+     "ties": 0,
+     "win_pct": 1.0,
+     "div_record": [
+      1,
+      0,
+      0
+     ],
+     "conf_record": [
+      3,
+      0,
+      0
+     ],
+     "points_for": 88,
+     "points_against": 50,
+     "point_diff": 38,
+     "streak": "W3",
+     "streak_value": 3,
+     "playoff_seed": 1,
+     "rank": 1
+    },
+    {
+     "abbr": "LV",
+     "espn_team_id": "13",
+     "wins": 3,
+     "losses": 0,
+     "ties": 0,
+     "win_pct": 1.0,
+     "div_record": [
+      1,
+      0,
+      0
+     ],
+     "conf_record": [
+      2,
+      0,
+      0
+     ],
+     "points_for": 88,
+     "points_against": 54,
+     "point_diff": 34,
+     "streak": "W3",
+     "streak_value": 3,
+     "playoff_seed": 5,
+     "rank": 2
+    },
+    {
+     "abbr": "DEN",
+     "espn_team_id": "7",
+     "wins": 2,
+     "losses": 1,
+     "ties": 0,
+     "win_pct": 0.6667,
+     "div_record": [
+      0,
+      1,
+      0
+     ],
+     "conf_record": [
+      1,
+      1,
+      0
+     ],
+     "points_for": 60,
+     "points_against": 70,
+     "point_diff": -10,
+     "streak": "W2",
+     "streak_value": 2,
+     "playoff_seed": 7,
+     "rank": 3
+    },
+    {
+     "abbr": "LAC",
+     "espn_team_id": "24",
+     "wins": 0,
+     "losses": 3,
+     "ties": 0,
+     "win_pct": 0.0,
+     "div_record": [
+      0,
+      1,
+      0
+     ],
+     "conf_record": [
+      0,
+      2,
+      0
+     ],
+     "points_for": 44,
+     "points_against": 76,
+     "point_diff": -32,
+     "streak": "L3",
+     "streak_value": -3,
+     "playoff_seed": 14,
+     "rank": 4
+    }
+   ]
+  },
+  {
+   "conference": "NFC",
+   "division": "NFC East",
+   "espn_division_id": "1",
+   "teams": [
+    {
+     "abbr": "PHI",
+     "espn_team_id": "21",
+     "wins": 2,
+     "losses": 1,
+     "ties": 0,
+     "win_pct": 0.6667,
+     "div_record": [
+      1,
+      0,
+      0
+     ],
+     "conf_record": [
+      1,
+      1,
+      0
+     ],
+     "points_for": 55,
+     "points_against": 69,
+     "point_diff": -14,
+     "streak": "L1",
+     "streak_value": -1,
+     "playoff_seed": 3,
+     "rank": 1
+    },
+    {
+     "abbr": "NYG",
+     "espn_team_id": "19",
+     "wins": 2,
+     "losses": 1,
+     "ties": 0,
+     "win_pct": 0.6667,
+     "div_record": [
+      1,
+      0,
+      0
+     ],
+     "conf_record": [
+      1,
+      1,
+      0
+     ],
+     "points_for": 46,
+     "points_against": 55,
+     "point_diff": -9,
+     "streak": "W1",
+     "streak_value": 1,
+     "playoff_seed": 8,
+     "rank": 2
+    },
+    {
+     "abbr": "DAL",
+     "espn_team_id": "6",
+     "wins": 1,
+     "losses": 2,
+     "ties": 0,
+     "win_pct": 0.3333,
+     "div_record": [
+      1,
+      1,
+      0
+     ],
+     "conf_record": [
+      1,
+      1,
+      0
+     ],
+     "points_for": 88,
+     "points_against": 82,
+     "point_diff": 6,
+     "streak": "L1",
+     "streak_value": -1,
+     "playoff_seed": 10,
+     "rank": 3
+    },
+    {
+     "abbr": "WSH",
+     "espn_team_id": "28",
+     "wins": 1,
+     "losses": 2,
+     "ties": 0,
+     "win_pct": 0.3333,
+     "div_record": [
+      0,
+      2,
+      0
+     ],
+     "conf_record": [
+      1,
+      2,
+      0
+     ],
+     "points_for": 75,
+     "points_against": 92,
+     "point_diff": -17,
+     "streak": "W1",
+     "streak_value": 1,
+     "playoff_seed": 12,
+     "rank": 4
+    }
+   ]
+  },
+  {
+   "conference": "NFC",
+   "division": "NFC North",
+   "espn_division_id": "10",
+   "teams": [
+    {
+     "abbr": "MIN",
+     "espn_team_id": "16",
+     "wins": 3,
+     "losses": 0,
+     "ties": 0,
+     "win_pct": 1.0,
+     "div_record": [
+      2,
+      0,
+      0
+     ],
+     "conf_record": [
+      3,
+      0,
+      0
+     ],
+     "points_for": 71,
+     "points_against": 41,
+     "point_diff": 30,
+     "streak": "W3",
+     "streak_value": 3,
+     "playoff_seed": 1,
+     "rank": 1
+    },
+    {
+     "abbr": "DET",
+     "espn_team_id": "8",
+     "wins": 2,
+     "losses": 1,
+     "ties": 0,
+     "win_pct": 0.6667,
+     "div_record": [
+      0,
+      0,
+      0
+     ],
+     "conf_record": [
+      1,
+      0,
+      0
+     ],
+     "points_for": 93,
+     "points_against": 95,
+     "point_diff": -2,
+     "streak": "W1",
+     "streak_value": 1,
+     "playoff_seed": 5,
+     "rank": 2
+    },
+    {
+     "abbr": "CHI",
+     "espn_team_id": "3",
+     "wins": 2,
+     "losses": 1,
+     "ties": 0,
+     "win_pct": 0.6667,
+     "div_record": [
+      0,
+      1,
+      0
+     ],
+     "conf_record": [
+      2,
+      1,
+      0
+     ],
+     "points_for": 89,
+     "points_against": 53,
+     "point_diff": 36,
+     "streak": "W1",
+     "streak_value": 1,
+     "playoff_seed": 6,
+     "rank": 3
+    },
+    {
+     "abbr": "GB",
+     "espn_team_id": "9",
+     "wins": 1,
+     "losses": 2,
+     "ties": 0,
+     "win_pct": 0.3333,
+     "div_record": [
+      0,
+      1,
+      0
+     ],
+     "conf_record": [
+      0,
+      2,
+      0
+     ],
+     "points_for": 56,
+     "points_against": 91,
+     "point_diff": -35,
+     "streak": "L1",
+     "streak_value": -1,
+     "playoff_seed": 14,
+     "rank": 4
+    }
+   ]
+  },
+  {
+   "conference": "NFC",
+   "division": "NFC South",
+   "espn_division_id": "11",
+   "teams": [
+    {
+     "abbr": "CAR",
+     "espn_team_id": "29",
+     "wins": 1,
+     "losses": 2,
+     "ties": 0,
+     "win_pct": 0.3333,
+     "div_record": [
+      1,
+      0,
+      0
+     ],
+     "conf_record": [
+      1,
+      1,
+      0
+     ],
+     "points_for": 89,
+     "points_against": 83,
+     "point_diff": 6,
+     "streak": "L1",
+     "streak_value": -1,
+     "playoff_seed": 4,
+     "rank": 1
+    },
+    {
+     "abbr": "NO",
+     "espn_team_id": "18",
+     "wins": 1,
+     "losses": 2,
+     "ties": 0,
+     "win_pct": 0.3333,
+     "div_record": [
+      0,
+      0,
+      0
+     ],
+     "conf_record": [
+      0,
+      1,
+      0
+     ],
+     "points_for": 81,
+     "points_against": 83,
+     "point_diff": -2,
+     "streak": "L1",
+     "streak_value": -1,
+     "playoff_seed": 11,
+     "rank": 2
+    },
+    {
+     "abbr": "ATL",
+     "espn_team_id": "1",
+     "wins": 1,
+     "losses": 2,
+     "ties": 0,
+     "win_pct": 0.3333,
+     "div_record": [
+      0,
+      1,
+      0
+     ],
+     "conf_record": [
+      1,
+      1,
+      0
+     ],
+     "points_for": 51,
+     "points_against": 68,
+     "point_diff": -17,
+     "streak": "W1",
+     "streak_value": 1,
+     "playoff_seed": 13,
+     "rank": 3
+    },
+    {
+     "abbr": "TB",
+     "espn_team_id": "27",
+     "wins": 0,
+     "losses": 3,
+     "ties": 0,
+     "win_pct": 0.0,
+     "div_record": [
+      0,
+      0,
+      0
+     ],
+     "conf_record": [
+      0,
+      1,
+      0
+     ],
+     "points_for": 62,
+     "points_against": 79,
+     "point_diff": -17,
+     "streak": "L3",
+     "streak_value": -3,
+     "playoff_seed": 16,
+     "rank": 4
+    }
+   ]
+  },
+  {
+   "conference": "NFC",
+   "division": "NFC West",
+   "espn_division_id": "3",
+   "teams": [
+    {
+     "abbr": "SF",
+     "espn_team_id": "25",
+     "wins": 3,
+     "losses": 0,
+     "ties": 0,
+     "win_pct": 1.0,
+     "div_record": [
+      2,
+      0,
+      0
+     ],
+     "conf_record": [
+      2,
+      0,
+      0
+     ],
+     "points_for": 98,
+     "points_against": 50,
+     "point_diff": 48,
+     "streak": "W3",
+     "streak_value": 3,
+     "playoff_seed": 2,
+     "rank": 1
+    },
+    {
+     "abbr": "SEA",
+     "espn_team_id": "26",
+     "wins": 2,
+     "losses": 1,
+     "ties": 0,
+     "win_pct": 0.6667,
+     "div_record": [
+      1,
+      0,
+      0
+     ],
+     "conf_record": [
+      1,
+      1,
+      0
+     ],
+     "points_for": 75,
+     "points_against": 50,
+     "point_diff": 25,
+     "streak": "L1",
+     "streak_value": -1,
+     "playoff_seed": 7,
+     "rank": 2
+    },
+    {
+     "abbr": "LAR",
+     "espn_team_id": "14",
+     "wins": 1,
+     "losses": 2,
+     "ties": 0,
+     "win_pct": 0.3333,
+     "div_record": [
+      0,
+      1,
+      0
+     ],
+     "conf_record": [
+      1,
+      1,
+      0
+     ],
+     "points_for": 61,
+     "points_against": 63,
+     "point_diff": -2,
+     "streak": "L1",
+     "streak_value": -1,
+     "playoff_seed": 9,
+     "rank": 3
+    },
+    {
+     "abbr": "ARI",
+     "espn_team_id": "22",
+     "wins": 1,
+     "losses": 2,
+     "ties": 0,
+     "win_pct": 0.3333,
+     "div_record": [
+      0,
+      2,
+      0
+     ],
+     "conf_record": [
+      0,
+      2,
+      0
+     ],
+     "points_for": 63,
+     "points_against": 81,
+     "point_diff": -18,
+     "streak": "L2",
+     "streak_value": -2,
+     "playoff_seed": 15,
+     "rank": 4
+    }
+   ]
+  }
+ ]
+}
