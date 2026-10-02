@@ -1,0 +1,248 @@
+{
+ "generated_at": "2026-08-18T06:17:43+00:00",
+ "source": "ESPN CDN https://a.espncdn.com/i/teamlogos/nfl/500/{abbr}.png",
+ "key": "ESPN team abbreviation",
+ "grid": {
+  "columns": 8,
+  "rows": 4,
+  "tile_css_px": 64
+ },
+ "sheets": {
+  "1x": {
+   "file": "nfl-sprite.png",
+   "width": 512,
+   "height": 256
+  },
+  "2x": {
+   "file": "nfl-sprite@2x.png",
+   "width": 1024,
+   "height": 512
+  }
+ },
+ "teams": {
+  "ARI": {
+   "name": "Arizona Cardinals",
+   "col": 0,
+   "row": 0,
+   "x": 0,
+   "y": 0
+  },
+  "ATL": {
+   "name": "Atlanta Falcons",
+   "col": 1,
+   "row": 0,
+   "x": -64,
+   "y": 0
+  },
+  "BAL": {
+   "name": "Baltimore Ravens",
+   "col": 2,
+   "row": 0,
+   "x": -128,
+   "y": 0
+  },
+  "BUF": {
+   "name": "Buffalo Bills",
+   "col": 3,
+   "row": 0,
+   "x": -192,
+   "y": 0
+  },
+  "CAR": {
+   "name": "Carolina Panthers",
+   "col": 4,
+   "row": 0,
+   "x": -256,
+   "y": 0
+  },
+  "CHI": {
+   "name": "Chicago Bears",
+   "col": 5,
+   "row": 0,
+   "x": -320,
+   "y": 0
+  },
+  "CIN": {
+   "name": "Cincinnati Bengals",
+   "col": 6,
+   "row": 0,
+   "x": -384,
+   "y": 0
+  },
+  "CLE": {
+   "name": "Cleveland Browns",
+   "col": 7,
+   "row": 0,
+   "x": -448,
+   "y": 0
+  },
+  "DAL": {
+   "name": "Dallas Cowboys",
+   "col": 0,
+   "row": 1,
+   "x": 0,
+   "y": -64
+  },
+  "DEN": {
+   "name": "Denver Broncos",
+   "col": 1,
+   "row": 1,
+   "x": -64,
+   "y": -64
+  },
+  "DET": {
+   "name": "Detroit Lions",
+   "col": 2,
+   "row": 1,
+   "x": -128,
+   "y": -64
+  },
+  "GB": {
+   "name": "Green Bay Packers",
+   "col": 3,
+   "row": 1,
+   "x": -192,
+   "y": -64
+  },
+  "HOU": {
+   "name": "Houston Texans",
+   "col": 4,
+   "row": 1,
+   "x": -256,
+   "y": -64
+  },
+  "IND": {
+   "name": "Indianapolis Colts",
+   "col": 5,
+   "row": 1,
+   "x": -320,
+   "y": -64
+  },
+  "JAX": {
+   "name": "Jacksonville Jaguars",
+   "col": 6,
+   "row": 1,
+   "x": -384,
+   "y": -64
+  },
+  "KC": {
+   "name": "Kansas City Chiefs",
+   "col": 7,
+   "row": 1,
+   "x": -448,
+   "y": -64
+  },
+  "LAC": {
+   "name": "Los Angeles Chargers",
+   "col": 0,
+   "row": 2,
+   "x": 0,
+   "y": -128
+  },
+  "LAR": {
+   "name": "Los Angeles Rams",
+   "col": 1,
+   "row": 2,
+   "x": -64,
+   "y": -128
+  },
+  "LV": {
+   "name": "Las Vegas Raiders",
+   "col": 2,
+   "row": 2,
+   "x": -128,
+   "y": -128
+  },
+  "MIA": {
+   "name": "Miami Dolphins",
+   "col": 3,
+   "row": 2,
+   "x": -192,
+   "y": -128
+  },
+  "MIN": {
+   "name": "Minnesota Vikings",
+   "col": 4,
+   "row": 2,
+   "x": -256,
+   "y": -128
+  },
+  "NE": {
+   "name": "New England Patriots",
+   "col": 5,
+   "row": 2,
+   "x": -320,
+   "y": -128
+  },
+  "NO": {
+   "name": "New Orleans Saints",
+   "col": 6,
+   "row": 2,
+   "x": -384,
+   "y": -128
+  },
+  "NYG": {
+   "name": "New York Giants",
+   "col": 7,
+   "row": 2,
+   "x": -448,
+   "y": -128
+  },
+  "NYJ": {
+   "name": "New York Jets",
+   "col": 0,
+   "row": 3,
+   "x": 0,
+   "y": -192
+  },
+  "PHI": {
+   "name": "Philadelphia Eagles",
+   "col": 1,
+   "row": 3,
+   "x": -64,
+   "y": -192
+  },
+  "PIT": {
+   "name": "Pittsburgh Steelers",
+   "col": 2,
+   "row": 3,
+   "x": -128,
+   "y": -192
+  },
+  "SEA": {
+   "name": "Seattle Seahawks",
+   "col": 3,
+   "row": 3,
+   "x": -192,
+   "y": -192
+  },
+  "SF": {
+   "name": "San Francisco 49ers",
+   "col": 4,
+   "row": 3,
+   "x": -256,
+   "y": -192
+  },
+  "TB": {
+   "name": "Tampa Bay Buccaneers",
+   "col": 5,
+   "row": 3,
+   "x": -320,
+   "y": -192
+  },
+  "TEN": {
+   "name": "Tennessee Titans",
+   "col": 6,
+   "row": 3,
+   "x": -384,
+   "y": -192
+  },
+  "WSH": {
+   "name": "Washington Commanders",
+   "col": 7,
+   "row": 3,
+   "x": -448,
+   "y": -192
+  }
+ }
+}

@@ -1,0 +1,46 @@
+/* NFL team logo sprite -- 8x4 grid, 64px tiles, keyed by ESPN abbreviation.
+   Source: ESPN CDN. Sheets are RGBA with a transparent background.
+   background-size is the 1x sheet so the @2x sheet scales correctly. */
+
+.nfl-logo {
+  display: inline-block;
+  width: 64px;
+  height: 64px;
+  background-image: url("nfl-sprite.png");
+  background-image: image-set(url("nfl-sprite.png") 1x, url("nfl-sprite@2x.png") 2x);
+  background-size: 512px 256px;
+  background-repeat: no-repeat;
+}
+
+.nfl-logo--ari { background-position: 0px 0px; } /* Arizona Cardinals */
+.nfl-logo--atl { background-position: -64px 0px; } /* Atlanta Falcons */
+.nfl-logo--bal { background-position: -128px 0px; } /* Baltimore Ravens */
+.nfl-logo--buf { background-position: -192px 0px; } /* Buffalo Bills */
+.nfl-logo--car { background-position: -256px 0px; } /* Carolina Panthers */
+.nfl-logo--chi { background-position: -320px 0px; } /* Chicago Bears */
+.nfl-logo--cin { background-position: -384px 0px; } /* Cincinnati Bengals */
+.nfl-logo--cle { background-position: -448px 0px; } /* Cleveland Browns */
+.nfl-logo--dal { background-position: 0px -64px; } /* Dallas Cowboys */
+.nfl-logo--den { background-position: -64px -64px; } /* Denver Broncos */
+.nfl-logo--det { background-position: -128px -64px; } /* Detroit Lions */
+.nfl-logo--gb { background-position: -192px -64px; } /* Green Bay Packers */
+.nfl-logo--hou { background-position: -256px -64px; } /* Houston Texans */
+.nfl-logo--ind { background-position: -320px -64px; } /* Indianapolis Colts */
+.nfl-logo--jax { background-position: -384px -64px; } /* Jacksonville Jaguars */
+.nfl-logo--kc { background-position: -448px -64px; } /* Kansas City Chiefs */
+.nfl-logo--lac { background-position: 0px -128px; } /* Los Angeles Chargers */
+.nfl-logo--lar { background-position: -64px -128px; } /* Los Angeles Rams */
+.nfl-logo--lv { background-position: -128px -128px; } /* Las Vegas Raiders */
+.nfl-logo--mia { background-position: -192px -128px; } /* Miami Dolphins */
+.nfl-logo--min { background-position: -256px -128px; } /* Minnesota Vikings */
+.nfl-logo--ne { background-position: -320px -128px; } /* New England Patriots */
+.nfl-logo--no { background-position: -384px -128px; } /* New Orleans Saints */
+.nfl-logo--nyg { background-position: -448px -128px; } /* New York Giants */
+.nfl-logo--nyj { background-position: 0px -192px; } /* New York Jets */
+.nfl-logo--phi { background-position: -64px -192px; } /* Philadelphia Eagles */
+.nfl-logo--pit { background-position: -128px -192px; } /* Pittsburgh Steelers */
+.nfl-logo--sea { background-position: -192px -192px; } /* Seattle Seahawks */
+.nfl-logo--sf { background-position: -256px -192px; } /* San Francisco 49ers */
+.nfl-logo--tb { background-position: -320px -192px; } /* Tampa Bay Buccaneers */
+.nfl-logo--ten { background-position: -384px -192px; } /* Tennessee Titans */
+.nfl-logo--wsh { background-position: -448px -192px; } /* Washington Commanders */
