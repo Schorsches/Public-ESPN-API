@@ -31,6 +31,7 @@ these files costs **zero** requests.
 | `nfl_reference.json` | 1.3 MB | Full object-per-row JSON for server-side processing |
 | `nfl_stadiums.slim.json` | 8 KB | Stadium roof, surface, coordinates and venue, keyed by ESPN abbreviation |
 | `nfl_stadiums.csv` | 3.1 KB | Same stadium data as rows, for table-editor or `\copy` import |
+| `nfl_venues.json` | 22 KB | **All 39 venues of the 2026 season** incl. international sites, keyed by ESPN venue id, with IANA timezone. Supersedes the two `nfl_stadiums.*` files for new code |
 | `manifest.json` | — | Counts and provenance for verification |
 
 Team logos are built into a retina spritesheet in [`../nfl-logo-sprite/`](../nfl-logo-sprite/),
@@ -189,3 +190,23 @@ being used as a guest.
 **Refresh must be upsert-only.** A player who leaves every roster should be marked inactive,
 never deleted, or any stored pick referencing them breaks. A partially failed refresh must not
 deactivate anybody.
+
+## All venues incl. international games (`nfl_venues.json`)
+
+Keyed by **ESPN venue id**, because ESPN uses different names for the same stadium (Houston's
+home games say "Reliant Stadium", Kansas City's "Arrowhead Stadium"; the names are kept as
+`aliases`). Match a game with `competitions[0].venue.id`; `teams[abbr]` gives a team's home venue
+for non-neutral games.
+
+- 39 venues: 30 home stadiums (SoFi and MetLife are shared) + Canton (Hall of Fame Game) + 8
+  international sites (Melbourne, Rio, London ×2, Saint-Denis, Madrid, Munich, Mexico City).
+- Each venue: name, aliases, city, state, country, ISO country code, lat/long, **IANA timezone**,
+  roof, surface, espn_indoor, type (`home` / `neutral` / `international`), home_teams.
+- `neutral_site_games` lists the 11 neutral games of 2026 with kickoff in UTC, local venue time
+  and Berlin time.
+- Every one of the 334 scheduled 2026 games resolves to a venue except the 12 playoff
+  placeholders, which have no venue yet.
+- Timezones computed offline from coordinates; spot-checked (Arizona → America/Phoenix,
+  Indianapolis, Detroit, Las Vegas → America/Los_Angeles). International coordinates from
+  OpenStreetMap, each a stadium object in the expected country. Bernabéu roof set to
+  `retractable` (ESPN only reports `indoor: true`).
