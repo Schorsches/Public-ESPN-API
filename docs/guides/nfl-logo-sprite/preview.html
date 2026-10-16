@@ -1,0 +1,89 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>NFL logo sprite preview</title>
+<link rel="stylesheet" href="nfl-sprite.css">
+<style>
+  :root { color-scheme: light dark; }
+  body { font: 14px system-ui, sans-serif; margin: 2rem; }
+  h1 { font-size: 1.1rem; }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 1rem; }
+  figure { margin: 0; text-align: center; }
+  figcaption { margin-top: .4rem; opacity: .7; font-variant-numeric: tabular-nums; }
+  .swatch { padding: 1rem; border-radius: 8px; }
+  .on-dark { background: #111; color: #eee; }
+</style></head><body>
+<h1>NFL logo sprite — 32 teams, 64px tiles, @2x via image-set()</h1>
+<p>Sheets: 512&times;256 (1x) and
+1024&times;512 (2x). Transparent background — shown here on the page
+background and again on dark to confirm the alpha channel.</p>
+<div class="grid swatch">
+    <figure><i class="nfl-logo nfl-logo--ari" role="img" aria-label="Arizona Cardinals"></i><figcaption>ARI</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--atl" role="img" aria-label="Atlanta Falcons"></i><figcaption>ATL</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--bal" role="img" aria-label="Baltimore Ravens"></i><figcaption>BAL</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--buf" role="img" aria-label="Buffalo Bills"></i><figcaption>BUF</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--car" role="img" aria-label="Carolina Panthers"></i><figcaption>CAR</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--chi" role="img" aria-label="Chicago Bears"></i><figcaption>CHI</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--cin" role="img" aria-label="Cincinnati Bengals"></i><figcaption>CIN</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--cle" role="img" aria-label="Cleveland Browns"></i><figcaption>CLE</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--dal" role="img" aria-label="Dallas Cowboys"></i><figcaption>DAL</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--den" role="img" aria-label="Denver Broncos"></i><figcaption>DEN</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--det" role="img" aria-label="Detroit Lions"></i><figcaption>DET</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--gb" role="img" aria-label="Green Bay Packers"></i><figcaption>GB</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--hou" role="img" aria-label="Houston Texans"></i><figcaption>HOU</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--ind" role="img" aria-label="Indianapolis Colts"></i><figcaption>IND</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--jax" role="img" aria-label="Jacksonville Jaguars"></i><figcaption>JAX</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--kc" role="img" aria-label="Kansas City Chiefs"></i><figcaption>KC</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--lac" role="img" aria-label="Los Angeles Chargers"></i><figcaption>LAC</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--lar" role="img" aria-label="Los Angeles Rams"></i><figcaption>LAR</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--lv" role="img" aria-label="Las Vegas Raiders"></i><figcaption>LV</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--mia" role="img" aria-label="Miami Dolphins"></i><figcaption>MIA</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--min" role="img" aria-label="Minnesota Vikings"></i><figcaption>MIN</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--ne" role="img" aria-label="New England Patriots"></i><figcaption>NE</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--no" role="img" aria-label="New Orleans Saints"></i><figcaption>NO</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--nyg" role="img" aria-label="New York Giants"></i><figcaption>NYG</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--nyj" role="img" aria-label="New York Jets"></i><figcaption>NYJ</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--phi" role="img" aria-label="Philadelphia Eagles"></i><figcaption>PHI</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--pit" role="img" aria-label="Pittsburgh Steelers"></i><figcaption>PIT</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--sea" role="img" aria-label="Seattle Seahawks"></i><figcaption>SEA</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--sf" role="img" aria-label="San Francisco 49ers"></i><figcaption>SF</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--tb" role="img" aria-label="Tampa Bay Buccaneers"></i><figcaption>TB</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--ten" role="img" aria-label="Tennessee Titans"></i><figcaption>TEN</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--wsh" role="img" aria-label="Washington Commanders"></i><figcaption>WSH</figcaption></figure>
+</div>
+<h2 style="font-size:1rem">On dark</h2>
+<div class="grid swatch on-dark">
+    <figure><i class="nfl-logo nfl-logo--ari" role="img" aria-label="Arizona Cardinals"></i><figcaption>ARI</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--atl" role="img" aria-label="Atlanta Falcons"></i><figcaption>ATL</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--bal" role="img" aria-label="Baltimore Ravens"></i><figcaption>BAL</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--buf" role="img" aria-label="Buffalo Bills"></i><figcaption>BUF</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--car" role="img" aria-label="Carolina Panthers"></i><figcaption>CAR</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--chi" role="img" aria-label="Chicago Bears"></i><figcaption>CHI</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--cin" role="img" aria-label="Cincinnati Bengals"></i><figcaption>CIN</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--cle" role="img" aria-label="Cleveland Browns"></i><figcaption>CLE</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--dal" role="img" aria-label="Dallas Cowboys"></i><figcaption>DAL</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--den" role="img" aria-label="Denver Broncos"></i><figcaption>DEN</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--det" role="img" aria-label="Detroit Lions"></i><figcaption>DET</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--gb" role="img" aria-label="Green Bay Packers"></i><figcaption>GB</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--hou" role="img" aria-label="Houston Texans"></i><figcaption>HOU</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--ind" role="img" aria-label="Indianapolis Colts"></i><figcaption>IND</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--jax" role="img" aria-label="Jacksonville Jaguars"></i><figcaption>JAX</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--kc" role="img" aria-label="Kansas City Chiefs"></i><figcaption>KC</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--lac" role="img" aria-label="Los Angeles Chargers"></i><figcaption>LAC</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--lar" role="img" aria-label="Los Angeles Rams"></i><figcaption>LAR</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--lv" role="img" aria-label="Las Vegas Raiders"></i><figcaption>LV</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--mia" role="img" aria-label="Miami Dolphins"></i><figcaption>MIA</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--min" role="img" aria-label="Minnesota Vikings"></i><figcaption>MIN</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--ne" role="img" aria-label="New England Patriots"></i><figcaption>NE</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--no" role="img" aria-label="New Orleans Saints"></i><figcaption>NO</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--nyg" role="img" aria-label="New York Giants"></i><figcaption>NYG</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--nyj" role="img" aria-label="New York Jets"></i><figcaption>NYJ</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--phi" role="img" aria-label="Philadelphia Eagles"></i><figcaption>PHI</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--pit" role="img" aria-label="Pittsburgh Steelers"></i><figcaption>PIT</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--sea" role="img" aria-label="Seattle Seahawks"></i><figcaption>SEA</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--sf" role="img" aria-label="San Francisco 49ers"></i><figcaption>SF</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--tb" role="img" aria-label="Tampa Bay Buccaneers"></i><figcaption>TB</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--ten" role="img" aria-label="Tennessee Titans"></i><figcaption>TEN</figcaption></figure>
+    <figure><i class="nfl-logo nfl-logo--wsh" role="img" aria-label="Washington Commanders"></i><figcaption>WSH</figcaption></figure>
+</div>
+</body></html>

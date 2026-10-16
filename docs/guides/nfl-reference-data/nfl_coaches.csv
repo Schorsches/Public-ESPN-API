@@ -1,0 +1,33 @@
+espn_coach_id,first_name,last_name,full_name,team_espn_id,team_abbr,team_display_name,conference,division,experience_years,headshot_url,name_is_ambiguous
+2471205,Joe,Brady,Joe Brady,2,BUF,Buffalo Bills,AFC,AFC East,0,,false
+4607510,Jeff,Hafley,Jeff Hafley,15,MIA,Miami Dolphins,AFC,AFC East,0,,false
+1257,Mike,Vrabel,Mike Vrabel,17,NE,New England Patriots,AFC,AFC East,7,https://a.espncdn.com/i/headshots/nfl/coaches/65/1257.jpg,false
+558,Aaron,Glenn,Aaron Glenn,20,NYJ,New York Jets,AFC,AFC East,1,,false
+5173599,Jesse,Minter,Jesse Minter,33,BAL,Baltimore Ravens,AFC,AFC North,0,,false
+2184471,Zac,Taylor,Zac Taylor,4,CIN,Cincinnati Bengals,AFC,AFC North,7,https://a.espncdn.com/i/headshots/nfl/coaches/65/2184471.jpg,false
+3017859,Todd,Monken,Todd Monken,5,CLE,Cleveland Browns,AFC,AFC North,0,,false
+17578,Mike,McCarthy,Mike McCarthy,23,PIT,Pittsburgh Steelers,AFC,AFC North,18,https://a.espncdn.com/i/headshots/nfl/coaches/65/17578.jpg,false
+9619,DeMeco,Ryans,DeMeco Ryans,34,HOU,Houston Texans,AFC,AFC South,3,,false
+2126648,Shane,Steichen,Shane Steichen,11,IND,Indianapolis Colts,AFC,AFC South,3,,false
+2161829,Liam,Coen,Liam Coen,30,JAX,Jacksonville Jaguars,AFC,AFC South,1,,false
+4085970,Robert,Saleh,Robert Saleh,10,TEN,Tennessee Titans,AFC,AFC South,4,,false
+17567,Sean,Payton,Sean Payton,7,DEN,Denver Broncos,AFC,AFC West,18,https://a.espncdn.com/i/headshots/nfl/coaches/65/17567.jpg,false
+17553,Andy,Reid,Andy Reid,12,KC,Kansas City Chiefs,AFC,AFC West,27,https://a.espncdn.com/i/headshots/nfl/coaches/65/17553.jpg,false
+27,Jim,Harbaugh,Jim Harbaugh,24,LAC,Los Angeles Chargers,AFC,AFC West,6,,false
+2181979,Klint,Kubiak,Klint Kubiak,13,LV,Las Vegas Raiders,AFC,AFC West,0,,false
+17530,Brian,Schottenheimer,Brian Schottenheimer,6,DAL,Dallas Cowboys,NFC,NFC East,1,,false
+17587,John,Harbaugh,John Harbaugh,19,NYG,New York Giants,NFC,NFC East,18,https://a.espncdn.com/i/headshots/nfl/coaches/65/17587.jpg,false
+4372439,Nick,Sirianni,Nick Sirianni,21,PHI,Philadelphia Eagles,NFC,NFC East,5,,false
+2485644,Dan,Quinn,Dan Quinn,28,WSH,Washington Commanders,NFC,NFC East,8,https://a.espncdn.com/i/headshots/nfl/coaches/65/2485644.jpg,false
+2180177,Ben,Johnson,Ben Johnson,3,CHI,Chicago Bears,NFC,NFC North,1,,false
+1832,Dan,Campbell,Dan Campbell,8,DET,Detroit Lions,NFC,NFC North,6,,false
+4082797,Matt,LaFleur,Matt LaFleur,9,GB,Green Bay Packers,NFC,NFC North,7,https://a.espncdn.com/i/headshots/nfl/coaches/65/4082797.jpg,false
+2146711,Kevin,O'Connell,Kevin O'Connell,16,MIN,Minnesota Vikings,NFC,NFC North,4,,false
+4408695,Kevin,Stefanski,Kevin Stefanski,1,ATL,Atlanta Falcons,NFC,NFC South,6,,false
+17762,Dave,Canales,Dave Canales,29,CAR,Carolina Panthers,NFC,NFC South,2,,false
+14882,Kellen,Moore,Kellen Moore,18,NO,New Orleans Saints,NFC,NFC South,1,,false
+7157,Todd,Bowles,Todd Bowles,27,TB,Tampa Bay Buccaneers,NFC,NFC South,9,https://a.espncdn.com/i/headshots/nfl/coaches/65/7157.jpg,false
+4872749,Mike,LaFleur,Mike LaFleur,22,ARI,Arizona Cardinals,NFC,NFC West,0,,false
+2499338,Sean,McVay,Sean McVay,14,LAR,Los Angeles Rams,NFC,NFC West,9,https://a.espncdn.com/i/headshots/nfl/coaches/65/2499338.jpg,false
+5044374,Mike,Macdonald,Mike Macdonald,26,SEA,Seattle Seahawks,NFC,NFC West,2,,false
+17533,Kyle,Shanahan,Kyle Shanahan,25,SF,San Francisco 49ers,NFC,NFC West,9,https://a.espncdn.com/i/headshots/nfl/coaches/65/17533.jpg,false
